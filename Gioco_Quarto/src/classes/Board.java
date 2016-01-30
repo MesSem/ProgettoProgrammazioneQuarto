@@ -22,4 +22,28 @@ public class Board implements I_board {
 		return 0;
 	}
 
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean isFree(int position) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void putPieceAtPosition(Piece piece, int position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Piece removePieceAtPosition(int position) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
