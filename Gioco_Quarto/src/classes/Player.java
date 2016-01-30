@@ -8,6 +8,8 @@ public class Player {
 	static Table t;
 	String pathBoardFile = "pedine.txt";
 	String pathNotUsedpiece = "Dautilizzare.txt";
+	static int indexBestPosition=0;//index about position where Pc must put his piece
+	static int indexBestPieceForEnemy=0;//index about piece to choose for enemy
 
 	public static void main(String[] args) {
 
@@ -22,18 +24,12 @@ public class Player {
 				.getACopyOfPieceNotUsed(); /* new ArrayList<Piece>(); */
 		Piece toPosition = t.getPieceToPosition();
 
-		int risultato = getNextMove(board, pieceNotUsed, toPosition, true);
+		int risultato = getNextMove(board, pieceNotUsed, toPosition, true,-1);
 
 	}
 
-	/*
-	 * public static void main(String[] args) { int[] m = new int[16]; int[]
-	 * disponibili = new int[10]; int risultato = cervello(m, disponibili, true,
-	 * true); }
-	 */
-
 	static int indicevittoria = -1;
-
+	
 	/**
 	 * 
 	 * @param board
@@ -41,44 +37,45 @@ public class Player {
 	 * @param turno
 	 *            true= computer, false avversario
 	 */
-	static int getNextMove(Board board, ArrayList<Piece> freePiece, Piece toPosition, Boolean turno) {
+	
+	//meglio rinominarlo
+	static int getNextMove(Board board, ArrayList<Piece> freePiece, Piece toPosition, Boolean turno, int depth) {
 		int alfa, beta_N;// a=computer, b=nemico
 		if (turno)
 			alfa = -2;
 		else
 			alfa = 2;
-		int situazione = 0;
+		int result = 0;
 		if (toPosition != null) {
 			for (int i = 0; i < board.size(); i++) {
 				if (board.isFree(i)) {
 					board.putPieceAtPosition(toPosition, i);
 
-					situazione = controlla();
-					if (situazione == 1000) {
+					result = controlla();
+					if (result == 1000) {
 						if (turno) {
-							alfa = Math.max(alfa, getNextMove(board, freePiece, null, turno));
+							alfa = Math.max(alfa, getNextMove(board, freePiece, null, turno, depth));
 						} else {
-							alfa = Math.min(alfa, getNextMove(board, freePiece, null, turno));
+							alfa = Math.min(alfa, getNextMove(board, freePiece, null, turno, depth));
 						}
 					} else {
 						if (turno) {
-							alfa= Math.max(alfa, situazione);
+							if(alfa>=result && depth==0){//solo se sono al primo livello, sennò non mi interessa
+								indexBestPosition=i;
+								if(alfa==1 )
+									return alfa;//dato che questo ramo da 1, cioè vittoria non ha senso andare oltre, mi salvo l'indice della posizione e chiudo
+							}
+							alfa= Math.max(alfa, result);
 						} else {
-							alfa = Math.min(alfa, situazione * -1);
-						}
-
+							alfa = Math.min(alfa, result * -1);
+						}						
 						/*
 						 * if (!turno && alfa_C>(situazione*(-1))) alfa_C =
 						 * situazione * -1; if (turno && alfa_C<situazione){
 						 * alfa_C=situazione;
 						 */
-
-						// indicevittoria=i;//lo faccio solo se sto sul giro più
-						// alto. dovrei fare uguale per la pedina da consegnare.
-						// creo un vettore globale con al configurazione
-						// vincente
-						// }
 					}
+					
 					board.removePieceAtPosition(i);
 				}
 			}
@@ -90,20 +87,27 @@ public class Player {
 			 */
 
 		} else {
-			// tolgo il primo elemento dal vettore
 			for (int k = 0; k < freePiece.size(); k++) {
 				Piece pieceForEnemy = freePiece.get(k);
 				freePiece.remove(k);
-				situazione = getNextMove(board, freePiece, pieceForEnemy, !turno);
-				if (situazione != 1000) {
-					freePiece.add(k, pieceForEnemy);
-					return situazione;
+				result = getNextMove(board, freePiece, pieceForEnemy, !turno, depth++);
+				
+				if (turno) {
+					if(alfa>=result && depth==0){//solo se sono al primo livello, sennò non mi interessa
+						indexBestPieceForEnemy=k;
+						if(alfa==1)
+							return alfa;
+					}
+					alfa = Math.max(alfa, result);
+				} else {
+					alfa = Math.min(alfa, result);
 				}
+				
 				freePiece.add(k, pieceForEnemy);
 			}
 
 		}
-		return situazione;
+		return alfa;
 	}
 
 	/**
