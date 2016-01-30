@@ -8,8 +8,10 @@ public class Player {
 	static Table t;
 	String pathBoardFile = "pedine.txt";
 	String pathNotUsedpiece = "Dautilizzare.txt";
-	static int indexBestPosition=0;//index about position where Pc must put his piece
-	static int indexBestPieceForEnemy=0;//index about piece to choose for enemy
+	static int indexBestPosition = 0;// index about position where Pc must put
+										// his piece
+	static int indexBestPieceForEnemy = 0;// index about piece to choose for
+											// enemy
 
 	public static void main(String[] args) {
 
@@ -24,28 +26,19 @@ public class Player {
 				.getACopyOfPieceNotUsed(); /* new ArrayList<Piece>(); */
 		Piece toPosition = t.getPieceToPosition();
 
-		int risultato = getNextMove(board, pieceNotUsed, toPosition, true,-1);
+		int result = nextMove(board, pieceNotUsed, toPosition, true, 0, -999, +999);
+		//manca di inserire il pezzo in tastiera
+		//mettere il pezzo scelto per il nemico
+		//salvare i files
+		//mandare messaggi di segnale per indicare vittoria perdita o altro.
+		//#TODO mettere che si ferma dopo certa profondità
 
 	}
 
-	static int indicevittoria = -1;
-	
-	/**
-	 * 
-	 * @param board
-	 * @param freePiece
-	 * @param turno
-	 *            true= computer, false avversario
-	 */
-	
-	//meglio rinominarlo
-	static int getNextMove(Board board, ArrayList<Piece> freePiece, Piece toPosition, Boolean turno, int depth) {
-		int alfa, beta_N;// a=computer, b=nemico
-		if (turno)
-			alfa = -2;
-		else
-			alfa = 2;
-		int result = 0;
+	static int nextMove(Board board, ArrayList<Piece> freePiece, Piece toPosition, Boolean turno, int depth,
+			int alpha, int beta) {
+
+		int result = 1000;
 		if (toPosition != null) {
 			for (int i = 0; i < board.size(); i++) {
 				if (board.isFree(i)) {
@@ -54,60 +47,74 @@ public class Player {
 					result = controlla();
 					if (result == 1000) {
 						if (turno) {
-							alfa = Math.max(alfa, getNextMove(board, freePiece, null, turno, depth));
+							// solo al livello 0, sennò non mi interessa
+							if (result >= alpha && depth == 0) {
+								indexBestPosition = i;
+								if (result == 1)
+									return result;// dato che questo ramo da 1,
+													// cioè vittoria non ha
+													// senso andare oltre, mi
+													// salvo l'indice della
+													// posizione e chiudo
+							}
+							alpha = Math.max(alpha, nextMove(board, freePiece, null, turno, depth, alpha, beta));
+							if (beta <= alpha)
+								break;
 						} else {
-							alfa = Math.min(alfa, getNextMove(board, freePiece, null, turno, depth));
+							beta = Math.min(beta, nextMove(board, freePiece, null, turno, depth, alpha, beta));
+							if (alpha <= beta)
+								break;
 						}
 					} else {
 						if (turno) {
-							if(alfa>=result && depth==0){//solo se sono al primo livello, sennò non mi interessa
-								indexBestPosition=i;
-								if(alfa==1 )
-									return alfa;//dato che questo ramo da 1, cioè vittoria non ha senso andare oltre, mi salvo l'indice della posizione e chiudo
+							// controllare
+							// solo al livello 0, sennò non mi interessa
+							if (result >= alpha && depth == 0) {
+								indexBestPosition = i;
+								if (result == 1)
+									return result;// dato che questo ramo da 1,
+													// cioè vittoria non ha
+													// senso andare oltre, mi
+													// salvo l'indice della
+													// posizione e chiudo
 							}
-							alfa= Math.max(alfa, result);
+							alpha = Math.max(alpha, result);
 						} else {
-							alfa = Math.min(alfa, result * -1);
-						}						
-						/*
-						 * if (!turno && alfa_C>(situazione*(-1))) alfa_C =
-						 * situazione * -1; if (turno && alfa_C<situazione){
-						 * alfa_C=situazione;
-						 */
+							beta = Math.min(beta, result * -1);
+						}
 					}
-					
 					board.removePieceAtPosition(i);
 				}
 			}
-			return alfa;
-			/*
-			 * for (int j = 0; j < disponibili.length; j++) { m[i] =
-			 * disponibili[j]; situazione = controlla(); if (situazione == -1) {
-			 * cervello(m, disponibili, !turno, !posiziona); } }
-			 */
-
 		} else {
 			for (int k = 0; k < freePiece.size(); k++) {
 				Piece pieceForEnemy = freePiece.get(k);
 				freePiece.remove(k);
-				result = getNextMove(board, freePiece, pieceForEnemy, !turno, depth++);
-				
+				result = nextMove(board, freePiece, pieceForEnemy, !turno, depth++, alpha, beta);
+
 				if (turno) {
-					if(alfa>=result && depth==0){//solo se sono al primo livello, sennò non mi interessa
-						indexBestPieceForEnemy=k;
-						if(alfa==1)
-							return alfa;
+					if (alpha >= result && depth == 0) {// solo se sono al primo
+														// livello, sennò non mi
+														// interessa
+						indexBestPieceForEnemy = k;
+						if (alpha == 1)
+							return alpha;
 					}
-					alfa = Math.max(alfa, result);
+					alpha = Math.max(alpha, result);
+					if (beta <= alpha)
+						break;
 				} else {
-					alfa = Math.min(alfa, result);
+					beta = Math.min(beta, result);
+					if (alpha <= beta)
+						break;
 				}
-				
 				freePiece.add(k, pieceForEnemy);
 			}
-
 		}
-		return alfa;
+		if (turno)
+			return alpha;
+		else
+			return beta;
 	}
 
 	/**
