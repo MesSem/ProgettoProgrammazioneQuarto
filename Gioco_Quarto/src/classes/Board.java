@@ -14,10 +14,10 @@ public int [] [] board= new int [4] [4];
 		//creation of variables to read the file. 
 		for(int r=0;r<4;r++)
 		{//read a whole row, split it , fill an array of strings called 4ex: row. ---> Split: String [] app= row.Split(' ');
-		// calls an input-checking method 4ex: boolean okay= checkInput( row )
+		// calls an input-checking method 4ex: boolean okay= checkInput( app )
 		// if it's okay then i can insert values into the board.
 			for(int c=0; c<4;c++)
-			{ //puts the values into the board. 4ex: board[r,c]=row[c];
+			{ //puts the values into the board. 4ex: board[r,c]=app[c];
 			}
 		}
 	}
@@ -26,7 +26,7 @@ public int [] [] board= new int [4] [4];
 	}
 		
 	}
-	private boolean checkInput(String [] row){
+	private boolean checkInput(String [] app){
 		boolean ok=false;
 		//checks if all row's elements are okay with our program. 
 		return ok;
