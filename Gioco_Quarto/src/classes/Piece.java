@@ -15,8 +15,18 @@ public class Piece implements I_piece {
 	Volume volume;
 	
 	
-	public Piece(char [] piece){
-		size
+	/*public Piece(Size size, Colour colour, Shape shape, Volume volume){
+		this.size=size;
+		this.colour=colour;
+		this.shape=shape;
+		this.volume=volume;
+			}*/
+	
+	public Piece(char [] c){
+		this.size=size.valueOf("");
+		this.colour=colour;
+		this.shape=shape;
+		this.volume=volume;
 			}
 }
 
