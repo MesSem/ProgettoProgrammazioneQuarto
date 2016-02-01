@@ -55,24 +55,30 @@ public class Player {
 			}
 			throw new Exception();
 		} catch (IOException e) {
-			message= e.getMessage();
+			message = e.getMessage();
 			messageNumber = 11;
 		} catch (PieceConfigurationException e) {
-			message= e.getMessage();
+			message = e.getMessage();
 			messageNumber = 12;
 		} catch (BoardConfigurationException e) {
-			message= e.getMessage();
+			message = e.getMessage();
 			messageNumber = 13;
 		} catch (Exception e) {
-			message= e.getMessage();
+			message = e.getMessage();
 			messageNumber = 999;// errore non atteso
 		}
-		
+
 		System.out.println(message);
 
-		// print number message  GUARDARE APPUNTI IN GIRO
+		// print number message GUARDARE APPUNTI IN GIRO
 
-		// #TODO mettere che si ferma dopo certa profondità
+		// #TODO mettere che si ferma dopo certa profondità POSSIBILE CODICE:
+		// if (depth >10)
+		// if(turno)
+		// return -1;
+		// else
+		// return 1;
+		// forse viceversa.
 
 	}
 

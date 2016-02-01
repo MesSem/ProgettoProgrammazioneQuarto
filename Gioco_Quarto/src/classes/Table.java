@@ -18,12 +18,14 @@ public class Table implements I_table {
 		pieceNotUsed=new ArrayList<>();
 		loadNotUsedPieces(pathNotUsedPiecesFile);
 		
-		//preparation of the board
+		//Preparation of the board
 		board=new Board();
 		board.loadBoard(pathBoardFile);
 	}
 
 	public void loadNotUsedPieces(String path) {
+		//#TODO : LEGGERE UNA RIGA, TENTARE DI CREARE IL PEZZO, IL PIECE STESSO CONTROLLERA SE VA BENE. POI CONTROLLARE SE IS_PLACED
+		
 		//prendo dati dal file
 		//controllo qualcosina
 		//uso metodo di Piece per controllare e caricare
