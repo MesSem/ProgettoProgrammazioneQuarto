@@ -1,7 +1,10 @@
 package classes;
 
 import java.awt.List;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.sql.rowset.serial.SerialArray;
 
 public class Player {
 
@@ -17,41 +20,58 @@ public class Player {
 
 	public static void main(String[] args) {
 
-		int messaggio = 0;
+		int messageNumber = 0;
+		String message = "";
 
-		t = new Table(pathBoardFile, pathNotUsedPiece);
+		try {
+			t = new Table(pathBoardFile, pathNotUsedPiece);
 
-		Board board = t.getACopyOfTheBoard();// Take from the table a board
-												// where the algorithm do is
-												// study to choose the better
-												// move
-		ArrayList<Piece> pieceNotUsed = t
-				.getACopyOfPieceNotUsed(); /* new ArrayList<Piece>(); */
-		Piece toPosition = t.getPieceToPosition();
+			Board board = t.getBoard();// Take from the table a board
+										// where the algorithm do is
+										// study to choose the better
+										// move
+			ArrayList<Piece> pieceNotUsed = t.getPieceNotUsed();
+			Piece toPosition = t.getPieceToPosition();
+			int result = nextMove(board, pieceNotUsed, toPosition, true, 0, -999, +999);
 
-		int result = nextMove(board, pieceNotUsed, toPosition, true, 0, -999, +999);
+			t.insertPieceInBoardAtPosition(toPosition, indexBestPosition);
 
-		t.insertPieceInBoardAtPosition(toPosition, indexBestPosition);
+			t.setEnemyPiece(pieceNotUsed.get(indexBestPieceForEnemy));
+			t.removePieceNotUsedAtPosition(indexBestPieceForEnemy);
 
-		t.setEnemyPiece(pieceNotUsed.get(indexBestPieceForEnemy));
-		t.removePieceNotUsedAtPosition(indexBestPieceForEnemy);
+			t.savePieces(pathNotUsedPiece);
+			t.saveBoard(pathBoardFile);
 
-		t.savePieces(pathNotUsedPiece);
-		t.saveBoard(pathBoardFile);
-
-		switch (result) {
-		case 0:
-			messaggio = 2;
-			break;
-		case 1:
-			messaggio = 1;
-			break;
-		case 1000:
-			messaggio = 0;
-			break;
+			switch (result) {
+			case 0:
+				messageNumber = 2;
+				break;
+			case 1:
+				messageNumber = 1;
+				break;
+			case 1000:
+				messageNumber = 0;
+				break;
+			}
+			throw new Exception();
+		} catch (IOException e) {
+			message= e.getMessage();
+			messageNumber = 11;
+		} catch (PieceConfigurationException e) {
+			message= e.getMessage();
+			messageNumber = 12;
+		} catch (BoardConfigurationException e) {
+			message= e.getMessage();
+			messageNumber = 13;
+		} catch (Exception e) {
+			message= e.getMessage();
+			messageNumber = 999;// errore non atteso
 		}
-		// print messaggio
 		
+		System.out.println(message);
+
+		// print number message  GUARDARE APPUNTI IN GIRO
+
 		// #TODO mettere che si ferma dopo certa profondità
 
 	}
