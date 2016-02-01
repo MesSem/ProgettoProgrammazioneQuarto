@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class Player {
 
 	static Table t;
-	String pathBoardFile = "pedine.txt";
-	String pathNotUsedpiece = "Dautilizzare.txt";
+	static String pathBoardFile = "pedine.txt";
+	static String pathNotUsedPiece = "Dautilizzare.txt";
 	static int indexBestPosition = 0;// index about position where Pc must put
 										// his piece
 	static int indexBestPieceForEnemy = 0;// index about piece to choose for
@@ -15,9 +15,7 @@ public class Player {
 
 	public static void main(String[] args) {
 
-		// t=new Table(pathBoardFile,pathNotUsedpiece);
-		t = new Table();// Ci vuole quello sopra, questo è solo per ora per non
-						// avere errori in giro
+		t=new Table(pathBoardFile,pathNotUsedPiece);
 		Board board = t.getACopyOfTheBoard();// Take from the table a board
 												// where the algorithm do is
 												// study to choose the better
@@ -77,6 +75,7 @@ public class Player {
 													// senso andare oltre, mi
 													// salvo l'indice della
 													// posizione e chiudo
+								//non ha senso testare gli altri rami figli con il for
 							}
 							alpha = Math.max(alpha, result);
 						} else {

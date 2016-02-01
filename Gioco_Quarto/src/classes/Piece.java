@@ -28,5 +28,11 @@ public class Piece implements I_piece {
 		this.shape=shape;
 		this.volume=volume;
 			}
+
+
+	static Piece checkAndCreate(String pieceDescription) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
