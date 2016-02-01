@@ -31,7 +31,32 @@ public class Piece implements I_piece {
 
 
 	static Piece checkAndCreate(String pieceDescription) {
-		// TODO Auto-generated method stub
+		char[] analyzedPiece=pieceDescription.toCharArray();
+		int i=0;
+		if(analyzedPiece.length<4)
+		{		
+			for (char c : analyzedPiece) {
+				switch(c){
+				case '*': return null ;
+				case 'A':
+				case 'B': 
+					if(i==0)
+					{
+						
+					}
+				case 'W':
+				case 'N':
+				case 'T':
+				case 'Q':
+				case 'P':
+				case 'F':	Piece p=new Piece(analyzedPiece); return p;
+				}
+				i++;
+			}
+		} else{
+			//throws exception: file is compromised.
+		}
+			
 		return null;
 	}
 }
