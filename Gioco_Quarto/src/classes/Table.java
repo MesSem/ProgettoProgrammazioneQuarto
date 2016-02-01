@@ -29,6 +29,7 @@ public class Table implements I_table {
 		//uso metodo di Piece per controllare e caricare
 		
 		//pieceNotUsed.add()// TODO Auto-generated method stub
+		pieceNotUsed.add(Piece.checkAndCreate("ABCD"));//al posto di abcd va la stringa che leggo
 
 	}
 
@@ -74,6 +75,24 @@ public class Table implements I_table {
 	@Override
 	public ArrayList<Piece> getPieceNotUsed() {
 		return pieceNotUsed;
+	}
+
+	@Override
+	public void saveBoard(String path) {
+		board.saveBoard(path);
+		
+	}
+
+	@Override
+	public void removePieceNotUsedAtPosition(int position) {
+		pieceNotUsed.remove(position);
+		
+	}
+
+	@Override
+	public void insertPieceInBoardAtPosition(Piece p,int position) {
+		board.putPieceAtPosition(p, position);
+		
 	}
 
 }
