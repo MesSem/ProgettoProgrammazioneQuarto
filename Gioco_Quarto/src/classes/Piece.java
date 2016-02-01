@@ -35,7 +35,7 @@ public class Piece implements I_piece {
 		}
 
 
-	static Piece checkAndCreate(String pieceDescription) {
+	static Piece checkAndCreate(String pieceDescription) throws PieceConfigurationException {
 		char[] analyzedPiece=pieceDescription.toCharArray();
 		String tmpPiece=""; //contains  letters which compose the piece, after i've checked them 
 		int i=0;
@@ -51,7 +51,9 @@ public class Piece implements I_piece {
 					tmpPiece=tmpPiece+c;  //i'm building a string which contains the letters, if they're right.
 					} else{
 						//throws exception:  the analyzedPiece has some wrong parameter
+						throw new PieceConfigurationException("An error has occurred. First character should always be A or B.");
 					} break;
+					
 				case 'W':
 				case 'N':
 					if(i==1)
@@ -59,7 +61,9 @@ public class Piece implements I_piece {
 				tmpPiece=tmpPiece+c;  //i'm building a string which contains the letters, if they're right.
 				} else{
 					//throws exception:  the analyzedPiece has some wrong parameter
+					throw new PieceConfigurationException("An error has occurred. Second character should always be W or N.");
 				} break;
+				
 				case 'T':
 				case 'Q':
 					if(i==2)
@@ -67,7 +71,9 @@ public class Piece implements I_piece {
 					tmpPiece=tmpPiece+c;  //i'm building a string which contains the letters, if they're right.
 					} else{
 						//throws exception:  the analyzedPiece has some wrong parameter
+						throw new PieceConfigurationException("An error has occurred. Third character should always be T or Q.");
 					} break;
+					
 				case 'P':
 				case 'F':	
 					if(i==3)
@@ -75,8 +81,9 @@ public class Piece implements I_piece {
 					tmpPiece=tmpPiece+c;  //i'm building a string which contains the letters, if they're right.
 					} else{
 						//throws exception:  the analyzedPiece has some wrong parameter
+						throw new PieceConfigurationException("An error has occurred. Fourth character should always be P or F.");
 					} break;
-				default: //throws exception: the analyzedPiece has some wrong parameter
+				default:  throw new PieceConfigurationException("An error has occurred. Second character should always be W or N.");
 				}
 				i++;
 			}
@@ -90,6 +97,20 @@ public class Piece implements I_piece {
 		}
 		
 		return null;
+	}
+
+
+	@Override
+	public boolean isEqual(Piece p) {  
+		// TODO Auto-generated method stub
+		if( (this.colour==p.colour)&& (this.size==p.size)&& (this.volume==p.volume)&&(this.shape==p.shape) )
+		return true;
+		else { return false;} 
+	}
+	
+	static boolean commonParameters(Piece p, Piece p2){  //***Da eliminare*** potrebbe dare errore bcs le variabili son private
+		
+		return false;
 	}
 }
 

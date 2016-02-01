@@ -1,11 +1,13 @@
 package interfaces;
 
 import classes.Piece;
+import classes.PieceConfigurationException;
 
 public interface I_board {
-	void loadBoard(String path);
+	void loadBoard(String path) throws PieceConfigurationException;
 	void saveBoard(String path);
 	int gameSituation(); //tells whether the match is ended with a victory, a defeat or if it's not ended yet.
+	boolean isPlaced(Piece p);
 	
 	//utili, poi possiamo anche levarli, ne dobbiamo parlare
 	int size();//get size of board(for example 16 elements)
