@@ -1,5 +1,6 @@
 package interfaces;
 
-public interface I_piece {
+import classes.Piece;
 
+public interface I_piece {
 }
