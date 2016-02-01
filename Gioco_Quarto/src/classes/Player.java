@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 public class Player {
 
+	// tra i controlli bisogna controllare che il gioco non sia già finito
+
 	static Table t;
 	static String pathBoardFile = "pedine.txt";
 	static String pathNotUsedPiece = "Dautilizzare.txt";
@@ -15,7 +17,10 @@ public class Player {
 
 	public static void main(String[] args) {
 
-		t=new Table(pathBoardFile,pathNotUsedPiece);
+		int messaggio = 0;
+
+		t = new Table(pathBoardFile, pathNotUsedPiece);
+
 		Board board = t.getACopyOfTheBoard();// Take from the table a board
 												// where the algorithm do is
 												// study to choose the better
@@ -25,16 +30,34 @@ public class Player {
 		Piece toPosition = t.getPieceToPosition();
 
 		int result = nextMove(board, pieceNotUsed, toPosition, true, 0, -999, +999);
-		//manca di inserire il pezzo in tastiera
-		//mettere il pezzo scelto per il nemico
-		//salvare i files
-		//mandare messaggi di segnale per indicare vittoria perdita o altro.
-		//#TODO mettere che si ferma dopo certa profondità
+
+		t.insertPieceInBoardAtPosition(toPosition, indexBestPosition);
+
+		t.setEnemyPiece(pieceNotUsed.get(indexBestPieceForEnemy));
+		t.removePieceNotUsedAtPosition(indexBestPieceForEnemy);
+
+		t.savePieces(pathNotUsedPiece);
+		t.saveBoard(pathBoardFile);
+
+		switch (result) {
+		case 0:
+			messaggio = 2;
+			break;
+		case 1:
+			messaggio = 1;
+			break;
+		case 1000:
+			messaggio = 0;
+			break;
+		}
+		// print messaggio
+		
+		// #TODO mettere che si ferma dopo certa profondità
 
 	}
 
-	static int nextMove(Board board, ArrayList<Piece> freePiece, Piece toPosition, Boolean turno, int depth,
-			int alpha, int beta) {
+	static int nextMove(Board board, ArrayList<Piece> freePiece, Piece toPosition, Boolean turno, int depth, int alpha,
+			int beta) {
 
 		int result = 1000;
 		if (toPosition != null) {
@@ -42,7 +65,7 @@ public class Player {
 				if (board.isFree(i)) {
 					board.putPieceAtPosition(toPosition, i);
 
-					result = controlla();
+					result = board.gameSituation();
 					if (result == 1000) {
 						if (turno) {
 							// solo al livello 0, sennò non mi interessa
@@ -75,7 +98,8 @@ public class Player {
 													// senso andare oltre, mi
 													// salvo l'indice della
 													// posizione e chiudo
-								//non ha senso testare gli altri rami figli con il for
+								// non ha senso testare gli altri rami figli con
+								// il for
 							}
 							alpha = Math.max(alpha, result);
 						} else {
