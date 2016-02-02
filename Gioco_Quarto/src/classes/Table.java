@@ -1,5 +1,9 @@
 package classes;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import interfaces.I_piece;
@@ -12,7 +16,7 @@ public class Table implements I_table {
 
 	Board board;
 	
-	public Table(String pathBoardFile, String pathNotUsedPiecesFile) throws PieceConfigurationException{
+	public Table(String pathBoardFile, String pathNotUsedPiecesFile) throws PieceConfigurationException, IOException{
 		
 		//Preparation of free piece
 		pieceNotUsed=new ArrayList<>();
@@ -23,16 +27,34 @@ public class Table implements I_table {
 		board.loadBoard(pathBoardFile);
 	}
 
-	public void loadNotUsedPieces(String path) throws PieceConfigurationException {
-		//#TODO : LEGGERE UNA RIGA, TENTARE DI CREARE IL PEZZO, IL PIECE STESSO CONTROLLERA SE VA BENE. POI CONTROLLARE SE IS_PLACED
+	/**
+	 * #TODO: It must be checked
+	 * #TODO: Add check if piece is already in list piecenotused
+	 * @param path
+	 * @throws PieceConfigurationException
+	 * @throws IOException
+	 */
+	public void loadNotUsedPieces(String path) throws PieceConfigurationException, IOException {
+		String line="";
+		Piece tmp;
 		
-		//prendo dati dal file
-		//controllo qualcosina
-		//uso metodo di Piece per controllare e caricare
+		FileReader fr = new FileReader(path);
 		
-		//pieceNotUsed.add()// TODO Auto-generated method stub
-		pieceNotUsed.add(Piece.checkAndCreate("ABCD"));//al posto di abcd va la stringa che leggo
-
+		BufferedReader in = new BufferedReader(fr);
+		String firstPiece=in.readLine();
+		if(firstPiece!=null )
+			pieceToPosition=Piece.checkAndCreate(firstPiece);
+		else
+			throw new PieceConfigurationException("No piece on file "+ path);
+		while((line=in.readLine())!=null){
+			tmp=new Piece(line.toCharArray());
+			if(! board.isPlaced(tmp))
+				pieceNotUsed.add(tmp);
+			else
+				throw new PieceConfigurationException("This piece " + line+" is already in the board ");
+		}
+		
+		in.close();
 	}
 
 	@Override
