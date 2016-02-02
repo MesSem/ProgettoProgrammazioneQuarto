@@ -12,7 +12,7 @@ public class Table implements I_table {
 
 	Board board;
 	
-	public Table(String pathBoardFile, String pathNotUsedPiecesFile){
+	public Table(String pathBoardFile, String pathNotUsedPiecesFile) throws PieceConfigurationException{
 		
 		//Preparation of free piece
 		pieceNotUsed=new ArrayList<>();
@@ -23,7 +23,7 @@ public class Table implements I_table {
 		board.loadBoard(pathBoardFile);
 	}
 
-	public void loadNotUsedPieces(String path) {
+	public void loadNotUsedPieces(String path) throws PieceConfigurationException {
 		//#TODO : LEGGERE UNA RIGA, TENTARE DI CREARE IL PEZZO, IL PIECE STESSO CONTROLLERA SE VA BENE. POI CONTROLLARE SE IS_PLACED
 		
 		//prendo dati dal file

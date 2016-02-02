@@ -69,8 +69,8 @@ public class Player {
 		}
 
 		System.out.println(message);
-
-		// print number message GUARDARE APPUNTI IN GIRO
+		
+		System.exit(messageNumber);
 
 		// #TODO mettere che si ferma dopo certa profondità POSSIBILE CODICE:
 		// if (depth >10)
