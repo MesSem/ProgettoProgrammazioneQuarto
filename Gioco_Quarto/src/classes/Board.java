@@ -24,20 +24,23 @@ public Piece [] [] board= new Piece [4] [4];
 				int cont=0;
 				//for(int r=0;r<4;r++)
 				while(((app=boardReader.readLine())!= null) && cont<5 )
-				{//read a whole row, split it , fill an array of strings called 4ex: row. ---> Split: String [] app= row.Split(' ');
+				{//read a whole row, split it , fill an array of strings called 4ex: row. ---> Split: String [] row= app.Split(' ');
 					String[] row=app.split(" ");
 					for(int c=0; c<4;c++)
 					{  // calls an input-checking method 4ex: boolean okay= checkInput( app )
 						// if it's okay then i can insert values into the board.
-						//puts the values into the board. 4ex: board[r,c]=app[c];
+						//puts the values into the board. 4ex: board[r,c]=row[c];
 						Piece p=Piece.checkAndCreate(row[c]);
-						boolean placed=isPlaced(p); 
-						if(placed)
+					if(p!=null)
 						{
-							//throws exception: Piece is already placed
-						} else{
-							board[cont][c]=p;
-						}
+								boolean placed=isPlaced(p); 
+								if(placed)
+								{
+									//throws exception: Piece is already placed
+								} else{
+									board[cont][c]=p;
+								}
+							}
 				} 
 				cont++;
 				}
@@ -47,7 +50,7 @@ public Piece [] [] board= new Piece [4] [4];
 			//throws exception, file doesn't exist.
 		}
 	}
-	 catch(IOException e){ // ***Commento da cancellare*** ora dà errore ma magari poi creando le variabili di I/O non lo dà più.
+	 catch(IOException e){  //Throws exception: input error
 		
 	}
 		
@@ -75,20 +78,31 @@ public Piece [] [] board= new Piece [4] [4];
 	public boolean isFree(int position) {
 		// TODO Auto-generated method stub
 		//checks if a position is null or not
-		return false;
+		int [] index= {position, -1};
+		convertIndex(index);
+		if(board[index[0]] [index[1]]==null)
+		return true;
+		else
+			return false;
 	}
 
 	@Override
 	public void putPieceAtPosition(Piece piece, int position) {
+		int [] index= {position, -1};
+		convertIndex(index);
+		board[index[0]] [index[1]]=piece;
 		// TODO Auto-generated method stub
 		//Places a piece into a certain position into the board
 		
 	}
 
 	@Override
-	public Piece removePieceAtPosition(int position) { 
+	public Piece removePieceAtPosition(int position) { //Puts null to a certain position in the Board.
 		// TODO Auto-generated method stub
-		//Puts null to a certain position in the Board.
+		int [] index= {position, -1};
+		convertIndex(index);
+		board[index[0]] [index[1]]=null;
+		
 		return null;
 	}
 	
@@ -97,7 +111,15 @@ public Piece [] [] board= new Piece [4] [4];
 		//If( (board[r][c] != null) && (p.isEqualTo(board[r][c]) ) { return true;}
 	
 		return false;
-		
 	}
 
+	private void convertIndex(int [] index){  //Converts an Array index into a couple of coordinates for a matrix. Uses an array because it's passed by references. 
+		int position=index[0];
+		int row=0, column=0;
+		column=position%4;
+		row= (position-column)/4;
+		index[0]=row;
+		index[1]=column;
+		
+				}
 }
