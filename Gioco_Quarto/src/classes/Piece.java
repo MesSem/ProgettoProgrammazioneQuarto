@@ -101,7 +101,7 @@ public class Piece implements I_piece {
 
 
 	@Override
-	public boolean isEqual(Piece p) {  
+	public boolean isEqualTo(Piece p) {  //Checks if an input-given piece is equal to the another piece.
 		// TODO Auto-generated method stub
 		if( (this.colour==p.colour)&& (this.size==p.size)&& (this.volume==p.volume)&&(this.shape==p.shape) )
 		return true;

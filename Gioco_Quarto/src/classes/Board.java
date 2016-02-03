@@ -107,10 +107,15 @@ public Piece [] [] board= new Piece [4] [4];
 	}
 	
 	public  boolean isPlaced(Piece p){
-		//scorro la scacchiera
-		//If( (board[r][c] != null) && (p.isEqualTo(board[r][c]) ) { return true;}
-	
-		return false;
+				for(int r=0;r<4;r++)
+				{ 
+					for(int c=0;c<4;c++)
+						{
+						if( (board[r][c] != null) && (p.isEqualTo(board[r][c]) ) ) 
+							return true;
+						}
+				}
+				return false;
 	}
 
 	private void convertIndex(int [] index){  //Converts an Array index into a couple of coordinates for a matrix. Uses an array because it's passed by references. 
