@@ -1,8 +1,10 @@
 package classes;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import interfaces.I_board;
@@ -56,10 +58,25 @@ public Piece [] [] board= new Piece [4] [4];
 		
 	}
 
+	/**
+	 * #TODO: ADD ALL CHECKS.  It can create error caused of a new line at the end of the file
+	 */
 	@Override
-	public void saveBoard(String path) {
-		// TODO Auto-generated method stub
-
+	public void saveBoard(String path) throws IOException {
+		FileWriter fw=new FileWriter(path);
+		BufferedWriter out=new BufferedWriter(fw);
+		
+		for(int i=0;i<4;i++){
+			for(int j=0;j<4;j++){
+				if(board[i][j]==null)
+					out.write("* ");
+				else
+				out.write(board[i][j].toString()+" ");
+			}
+			out.newLine();
+		}
+		out.flush();
+		out.close();
 	}
 
 	@Override

@@ -39,8 +39,8 @@ public class Player {
 			t.setEnemyPiece(pieceNotUsed.get(indexBestPieceForEnemy));
 			t.removePieceNotUsedAtPosition(indexBestPieceForEnemy);
 
-			//t.savePieces(pathNotUsedPiece);
-			//t.saveBoard(pathBoardFile);
+			t.savePieces(pathNotUsedPiece);
+			t.saveBoard(pathBoardFile);
 
 			switch (t.getGameSituation()) {
 			case 0:
@@ -89,10 +89,16 @@ public class Player {
 
 	static int nextMove(Board board, ArrayList<Piece> freePiece, Piece toPosition, Boolean turno, int depth, int alpha,
 			int beta) {
+		if (depth >2)
+			 if(turno)
+			 return +100;
+			 else
+			 return -100;
 
 		int result = 1000;
 		if (toPosition != null) {
 			for (int i = 0; i < board.size(); i++) {
+				
 				if (board.isFree(i)) {
 					board.putPieceAtPosition(toPosition, i);
 

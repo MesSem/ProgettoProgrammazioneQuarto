@@ -112,6 +112,11 @@ public class Piece implements I_piece {
 		else { return false;} 
 	}
 	
+	@Override
+	public String toString() {
+		return   new StringBuilder().append(size).append(colour).append(shape).append(volume).toString();
+	}
+
 	static boolean victory(Piece p0,Piece p1, Piece p2, Piece p3){  //***Da eliminare*** potrebbe dare errore bcs le variabili son private
 	 
 		if( ( (p0.colour==p1.colour)&&(p0.colour==p2.colour) && (p0.colour==p3.colour) )  

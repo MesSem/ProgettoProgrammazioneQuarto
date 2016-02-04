@@ -1,8 +1,10 @@
 package classes;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -66,10 +68,23 @@ public class Table implements I_table {
 		pieceToPosition = piece;
 	}
 
+	/**
+	 * #TODO: It must be checked #TODO: Add check if piece is already in list
+	 * piecenotused
+	 * @throws IOException 
+	 */
 	@Override
-	public void savePieces(String path) {
-		// salvare la lista di pedine, ma in prima riga salvare toPosition
-
+	public void savePieces(String path) throws IOException {
+		FileWriter fw=new FileWriter(path);
+		BufferedWriter out=new BufferedWriter(fw);
+		out.write(pieceToPosition.toString());
+		String s=pieceToPosition.toString();
+		for (Piece piece : pieceNotUsed) {
+			out.newLine();
+			out.write(piece.toString());
+		}
+		out.flush();
+		out.close();
 	}
 
 	/**
@@ -106,7 +121,7 @@ public class Table implements I_table {
 	}
 
 	@Override
-	public void saveBoard(String path) {
+	public void saveBoard(String path) throws IOException {
 		board.saveBoard(path);
 
 	}
