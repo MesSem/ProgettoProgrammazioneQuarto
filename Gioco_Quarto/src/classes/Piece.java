@@ -34,12 +34,16 @@ public class Piece implements I_piece {
 		volume=c[3];
 		}
 
-
+	//ATTENZIONE -******************* ATTENZIONE**********
+	//*****************************
+	//*****************************
+	//***************************
+//#ATTENTION #TODO attenzione, da ok anche se c'è un asterisco, non va sempre bene, se è chiamato da table, asterico deve essere segnato come errore
 	static Piece checkAndCreate(String pieceDescription) throws PieceConfigurationException {
 		char[] analyzedPiece=pieceDescription.toCharArray();
 		String tmpPiece=""; //contains  letters which compose the piece, after i've checked them 
 		int i=0;
-		if(analyzedPiece.length<4)
+		if(analyzedPiece.length==4 || analyzedPiece.length==1)
 		{		
 			for (char c : analyzedPiece) {
 				switch(c){
@@ -87,13 +91,13 @@ public class Piece implements I_piece {
 				}
 				i++;
 			}
-			if(i==3){
+			if(i==4){
 				//If the program arrives here it means that the piece is okay. 
 		Piece p=new Piece(tmpPiece.toCharArray());
 		return p;
 			}
 		} else{
-			//throws exception: file is compromised. --->There's a string longer than 4 chars. 
+			throw new PieceConfigurationException("An error has occurred. file is compromised. --->There's a string longer or lower than 4 chars."); 
 		}
 		
 		return null;

@@ -11,8 +11,8 @@ public class Player {
 	// tra i controlli bisogna controllare che il gioco non sia già finito
 
 	static Table t;
-	static String pathBoardFile = "pedine.txt";
-	static String pathNotUsedPiece = "Dautilizzare.txt";
+	static String pathBoardFile = "/home/morettini/git/ProgettoProgrammazioneQuarto/Pedine & Scacchiera/board.txt";
+	static String pathNotUsedPiece = "/home/morettini/git/ProgettoProgrammazioneQuarto/Pedine & Scacchiera/pieces.txt";
 	static int indexBestPosition = 0;// index about position where Pc must put
 										// his piece
 	static int indexBestPieceForEnemy = 0;// index about piece to choose for
@@ -39,21 +39,26 @@ public class Player {
 			t.setEnemyPiece(pieceNotUsed.get(indexBestPieceForEnemy));
 			t.removePieceNotUsedAtPosition(indexBestPieceForEnemy);
 
-			t.savePieces(pathNotUsedPiece);
-			t.saveBoard(pathBoardFile);
+			//t.savePieces(pathNotUsedPiece);
+			//t.saveBoard(pathBoardFile);
 
-			switch (result) {
+			switch (t.getGameSituation()) {
 			case 0:
+				message="pareggio pos"+indexBestPosition;
 				messageNumber = 2;
 				break;
 			case 1:
+				message="vinto pos"+ indexBestPosition;
 				messageNumber = 1;
 				break;
 			case 1000:
+				message="continuare pos"+indexBestPosition;
 				messageNumber = 0;
 				break;
+				default:
+					throw new Exception("Error not atteso");
+					
 			}
-			throw new Exception();
 		} catch (IOException e) {
 			message = e.getMessage();
 			messageNumber = 11;
@@ -97,20 +102,26 @@ public class Player {
 							// solo al livello 0, sennò non mi interessa
 							if (result >= alpha && depth == 0) {
 								indexBestPosition = i;
-								if (result == 1)
-									return result;// dato che questo ramo da 1,
+								if (result == 1){
+									board.removePieceAtPosition(i);
+									return result;
+								}// dato che questo ramo da 1,
 													// cioè vittoria non ha
 													// senso andare oltre, mi
 													// salvo l'indice della
 													// posizione e chiudo
 							}
 							alpha = Math.max(alpha, nextMove(board, freePiece, null, turno, depth, alpha, beta));
-							if (beta <= alpha)
+							if (beta <= alpha){
+								board.removePieceAtPosition(i);
 								break;
+							}
 						} else {
 							beta = Math.min(beta, nextMove(board, freePiece, null, turno, depth, alpha, beta));
-							if (alpha <= beta)
+							if (alpha <= beta){
+								board.removePieceAtPosition(i);
 								break;
+							}
 						}
 					} else {
 						if (turno) {
@@ -118,8 +129,10 @@ public class Player {
 							// solo al livello 0, sennò non mi interessa
 							if (result >= alpha && depth == 0) {
 								indexBestPosition = i;
-								if (result == 1)
-									return result;// dato che questo ramo da 1,
+								if (result == 1){
+									board.removePieceAtPosition(i);
+									return result;
+								}// dato che questo ramo da 1,
 													// cioè vittoria non ha
 													// senso andare oltre, mi
 													// salvo l'indice della
@@ -146,16 +159,22 @@ public class Player {
 														// livello, sennò non mi
 														// interessa
 						indexBestPieceForEnemy = k;
-						if (alpha == 1)
+						if (alpha == 1){
+							freePiece.add(k, pieceForEnemy);
 							return alpha;
+							}
 					}
 					alpha = Math.max(alpha, result);
-					if (beta <= alpha)
+					if (beta <= alpha){
+						freePiece.add(k, pieceForEnemy);
 						break;
+					}
 				} else {
 					beta = Math.min(beta, result);
-					if (alpha <= beta)
+					if (alpha <= beta){
+						freePiece.add(k, pieceForEnemy);
 						break;
+					}
 				}
 				freePiece.add(k, pieceForEnemy);
 			}

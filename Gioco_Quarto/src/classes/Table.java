@@ -10,61 +10,65 @@ import interfaces.I_piece;
 import interfaces.I_table;
 
 public class Table implements I_table {
-	
+
 	ArrayList<Piece> pieceNotUsed;
 	Piece pieceToPosition;
 
 	Board board;
-	
-	public Table(String pathBoardFile, String pathNotUsedPiecesFile) throws PieceConfigurationException, IOException{
-		
-		//Preparation of free piece
-		pieceNotUsed=new ArrayList<>();
-		loadNotUsedPieces(pathNotUsedPiecesFile);
-		
-		//Preparation of the board
-		board=new Board();
+
+	public Table(String pathBoardFile, String pathNotUsedPiecesFile) throws PieceConfigurationException, IOException {
+		// Preparation of the board
+		board = new Board();
 		board.loadBoard(pathBoardFile);
+
+		// Preparation of free piece
+		pieceNotUsed = new ArrayList<>();
+		loadNotUsedPieces(pathNotUsedPiecesFile);
 	}
 
 	/**
-	 * #TODO: It must be checked
-	 * #TODO: Add check if piece is already in list piecenotused
+	 * #TODO: It must be checked #TODO: Add check if piece is already in list
+	 * piecenotused
+	 * 
 	 * @param path
 	 * @throws PieceConfigurationException
 	 * @throws IOException
 	 */
 	public void loadNotUsedPieces(String path) throws PieceConfigurationException, IOException {
-		String line="";
+		String line = "";
 		Piece tmp;
-		
+
 		FileReader fr = new FileReader(path);
-		
+
 		BufferedReader in = new BufferedReader(fr);
-		String firstPiece=in.readLine();
-		if(firstPiece!=null )
-			pieceToPosition=Piece.checkAndCreate(firstPiece);
-		else
-			throw new PieceConfigurationException("No piece on file "+ path);
-		while((line=in.readLine())!=null){
-			tmp=new Piece(line.toCharArray());
-			if(! board.isPlaced(tmp))
+		String firstPiece = in.readLine();
+		if (firstPiece != null) {
+			tmp = Piece.checkAndCreate(firstPiece);
+			if (!(board.isPlaced(tmp)))
+				pieceToPosition=tmp;
+			else
+				throw new PieceConfigurationException("This piece " + line + " is already in the board ");
+		} else
+			throw new PieceConfigurationException("No piece on file " + path);
+		while ((line = in.readLine()) != null) {
+			tmp = Piece.checkAndCreate(line);
+			if (!(board.isPlaced(tmp)))
 				pieceNotUsed.add(tmp);
 			else
-				throw new PieceConfigurationException("This piece " + line+" is already in the board ");
+				throw new PieceConfigurationException("This piece " + line + " is already in the board ");
 		}
-		
+
 		in.close();
 	}
 
 	@Override
 	public void setEnemyPiece(Piece piece) {
-		pieceToPosition=piece;
+		pieceToPosition = piece;
 	}
 
 	@Override
 	public void savePieces(String path) {
-		//salvare la lista di pedine, ma in prima riga salvare toPosition
+		// salvare la lista di pedine, ma in prima riga salvare toPosition
 
 	}
 
@@ -73,7 +77,7 @@ public class Table implements I_table {
 	 */
 	@Override
 	public Board getACopyOfTheBoard() {
-		
+
 		return null;
 	}
 
@@ -104,19 +108,24 @@ public class Table implements I_table {
 	@Override
 	public void saveBoard(String path) {
 		board.saveBoard(path);
-		
+
 	}
 
 	@Override
 	public void removePieceNotUsedAtPosition(int position) {
 		pieceNotUsed.remove(position);
-		
+
 	}
 
 	@Override
-	public void insertPieceInBoardAtPosition(Piece p,int position) {
+	public void insertPieceInBoardAtPosition(Piece p, int position) {
 		board.putPieceAtPosition(p, position);
-		
+
+	}
+
+	@Override
+	public int getGameSituation() {
+		return board.gameSituation();
 	}
 
 }

@@ -17,4 +17,6 @@ public interface I_table {
 	Piece getPieceToPosition();
 	void removePieceNotUsedAtPosition(int position);
 	void insertPieceInBoardAtPosition(Piece p,int position);
+	
+	int getGameSituation();
 }

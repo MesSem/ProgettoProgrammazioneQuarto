@@ -83,7 +83,10 @@ public Piece [] [] board= new Piece [4] [4];
 		if((board[0] [3]!=null)&&( board[1] [2]!=null)&& (board[2] [1]!=null)&&( board[3] [0]!=null))  //Checks diagonal
 			if(Piece.victory(board[0] [3], board[1] [2], board[2] [1], board[3] [0]) )
 				return 1;
-		
+		for(int i=0;i<4;i++)
+			for(int j=0;j<4;j++)
+				if(board[i][j]==null)
+					return 1000;
 		return 0;
 	}
 
@@ -125,7 +128,7 @@ public Piece [] [] board= new Piece [4] [4];
 		return null;
 	}
 	
-	public  boolean isPlaced(Piece p){
+	public boolean isPlaced(Piece p){
 				for(int r=0;r<4;r++)
 				{ 
 					for(int c=0;c<4;c++)
