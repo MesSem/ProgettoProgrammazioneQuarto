@@ -108,8 +108,14 @@ public class Piece implements I_piece {
 		else { return false;} 
 	}
 	
-	static boolean commonParameters(Piece p, Piece p2){  //***Da eliminare*** potrebbe dare errore bcs le variabili son private
-		
+	static boolean victory(Piece p0,Piece p1, Piece p2, Piece p3){  //***Da eliminare*** potrebbe dare errore bcs le variabili son private
+	 
+		if( ( (p0.colour==p1.colour)&&(p0.colour==p2.colour) && (p0.colour==p3.colour) )  
+				|| ( (p0.size==p1.size)&&(p0.size==p2.size) && (p0.size==p3.size))
+				|| ( (p0.volume==p1.volume)&&(p0.volume==p2.volume) && (p0.volume==p3.volume))
+				|| ( (p0.shape==p1.shape)&&(p0.shape==p2.shape) && (p0.shape==p3.shape))) 
+			return true;
+		else			
 		return false;
 	}
 }

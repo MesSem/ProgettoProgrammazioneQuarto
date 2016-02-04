@@ -65,6 +65,25 @@ public Piece [] [] board= new Piece [4] [4];
 	@Override
 	public int gameSituation() {
 		// TODO Auto-generated method stub
+		for(int r=0;r<4;r++)//scans each row of the board, checking if there's any victory .
+		{
+			if((board[r] [0]!=null)&&( board[r] [1]!=null)&& (board[r] [2]!=null)&&( board[r] [3]!=null)) //Checks if there actually are pieces in those positions
+				if(Piece.victory(board[r] [0], board[r] [1], board[r] [2], board[r] [3]) )	//Checks if those pieces have something in common
+					return 1; //if they all have something in common you win.
+		}
+		for(int c=0;c<4;c++)//scans each column of the board, checking if there's any victory .
+		{
+			if((board[0] [c]!=null)&&( board[1] [c]!=null)&& (board[2] [c]!=null)&&( board[3] [c]!=null))  //Checks if there actually are pieces in those positions
+				if(Piece.victory(board[0] [c], board[1] [c], board[2] [c], board[3] [c]) )
+					return 1; //vittoria
+		}
+		if((board[0] [0]!=null)&&( board[1] [1]!=null)&& (board[2] [2]!=null)&&( board[3] [3]!=null))  //Checks diagonal
+			if(Piece.victory(board[0] [0], board[1] [1], board[2] [2], board[3] [3]) )
+				return 1; //vittoria
+		if((board[0] [3]!=null)&&( board[1] [2]!=null)&& (board[2] [1]!=null)&&( board[3] [0]!=null))  //Checks diagonal
+			if(Piece.victory(board[0] [3], board[1] [2], board[2] [1], board[3] [0]) )
+				return 1;
+		
 		return 0;
 	}
 
