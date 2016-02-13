@@ -16,19 +16,17 @@ public Piece [] [] board= new Piece [4] [4];
 	public void loadBoard(String path) throws PieceConfigurationException {
 	try
 	{
-		//creation of variables to read the file.
-		File boardfile=new File(path);
-		if(boardfile.exists())
+		File boardfile=new File(path); 	/**Creates file-reader variables.*/
+		if(boardfile.exists()) /** if file exists*/
 		{
-				FileReader br=new FileReader(boardfile);
+				FileReader br=new FileReader(boardfile);  /**opens file, reading mode*/
 				BufferedReader boardReader= new BufferedReader(br);
 				String app;
 				int cont=0;
-				//for(int r=0;r<4;r++)
-				while(((app=boardReader.readLine())!= null) && cont<5 )
+				while(((app=boardReader.readLine())!= null) && cont<5 ) /** while i'm actually reading something and if i've still not read more than 4 lines i put the value of that line in app*/
 				{//read a whole row, split it , fill an array of strings called 4ex: row. ---> Split: String [] row= app.Split(' ');
-					String[] row=app.split(" ");
-					for(int c=0; c<4;c++)
+					String[] row=app.split(" "); /**Splits the read line, each row's cell has now a piece a string which should embody a piece or a white space.*/
+					for(int c=0; c<4;c++)  /**scans each row's cells and checks its actual value, if  it's okay it becomes a piece on the board.*/
 					{  // calls an input-checking method 4ex: boolean okay= checkInput( app )
 						// if it's okay then i can insert values into the board.
 						//puts the values into the board. 4ex: board[r,c]=row[c];
@@ -62,13 +60,13 @@ public Piece [] [] board= new Piece [4] [4];
 	 * #TODO: ADD ALL CHECKS.  It can create error caused of a new line at the end of the file
 	 */
 	@Override
-	public void saveBoard(String path) throws IOException {
+	public void saveBoard(String path) throws IOException { /**Saves board's new configuration*/
 		FileWriter fw=new FileWriter(path);
 		BufferedWriter out=new BufferedWriter(fw);
 		
 		for(int i=0;i<4;i++){
 			for(int j=0;j<4;j++){
-				if(board[i][j]==null)
+				if(board[i][j]==null)  //If it's null it's a white space.
 					out.write("* ");
 				else
 				out.write(board[i][j].toString()+" ");
@@ -80,7 +78,7 @@ public Piece [] [] board= new Piece [4] [4];
 	}
 
 	@Override
-	public int gameSituation() {
+	public int gameSituation() { /**This method is called by the main stream. It checks if the game is ended or not.*/
 		// TODO Auto-generated method stub
 		for(int r=0;r<4;r++)//scans each row of the board, checking if there's any victory .
 		{
@@ -114,11 +112,11 @@ public Piece [] [] board= new Piece [4] [4];
 	}
 
 	@Override
-	public boolean isFree(int position) {
+	public boolean isFree(int position) {/**checks if a position on the board is empty or not*/
 		// TODO Auto-generated method stub
-		//checks if a position is null or not
 		int [] index= {position, -1};
-		convertIndex(index);
+		convertIndex(index);  //Calls a method which converts an array index in a couple of indexes for our square matrix 
+		//It has an array as input because it's passed by reference so we'll have 2 edited variables into the array as output.
 		if(board[index[0]] [index[1]]==null)
 		return true;
 		else
@@ -126,17 +124,17 @@ public Piece [] [] board= new Piece [4] [4];
 	}
 
 	@Override
-	public void putPieceAtPosition(Piece piece, int position) {
+	public void putPieceAtPosition(Piece piece, int position) {/**Places a piece into a certain position into the board*/
 		int [] index= {position, -1};
 		convertIndex(index);
 		board[index[0]] [index[1]]=piece;
 		// TODO Auto-generated method stub
-		//Places a piece into a certain position into the board
+		
 		
 	}
 
 	@Override
-	public Piece removePieceAtPosition(int position) { //Puts null to a certain position in the Board.
+	public Piece removePieceAtPosition(int position) { /**Assigns "null" as value to the input-given board's position*/
 		// TODO Auto-generated method stub
 		int [] index= {position, -1};
 		convertIndex(index);
@@ -157,7 +155,7 @@ public Piece [] [] board= new Piece [4] [4];
 				return false;
 	}
 
-	private void convertIndex(int [] index){  //Converts an Array index into a couple of coordinates for a matrix. Uses an array because it's passed by references. 
+	private void convertIndex(int [] index){  /**Converts an Array index into a couple of coordinates for a matrix. Uses an array because it's passed by references. */
 		int position=index[0];
 		int row=0, column=0;
 		column=position%4;
