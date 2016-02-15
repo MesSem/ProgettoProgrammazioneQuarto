@@ -88,7 +88,7 @@ public class Piece implements I_piece {
 		return p;
 			}
 		} else{
-			throw new PieceConfigurationException("An error has occurred. file is compromised. --->There's a string longer or lower than 4 chars."); 
+			throw new PieceConfigurationException("An error has occurred. file is compromised. --->There's a string longer or shorter than 4 chars."); 
 		}
 		
 		return null;

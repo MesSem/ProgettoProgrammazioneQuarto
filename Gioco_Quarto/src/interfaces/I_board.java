@@ -2,11 +2,11 @@ package interfaces;
 
 import java.io.IOException;
 
+import classes.BoardConfigurationException;
 import classes.Piece;
-import classes.PieceConfigurationException;
 
 public interface I_board {
-	void loadBoard(String path) throws PieceConfigurationException;
+	void loadBoard(String path) throws IOException, BoardConfigurationException;
 	void saveBoard(String path) throws IOException;
 	int gameSituation(); //tells whether the match is ended with a victory, a defeat or if it's not ended yet.
 	boolean isPlaced(Piece p);

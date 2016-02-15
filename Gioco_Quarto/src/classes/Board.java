@@ -1,10 +1,12 @@
 package classes;
 
+import java.awt.image.ImagingOpException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOError;
 import java.io.IOException;
 
 import interfaces.I_board;
@@ -12,31 +14,42 @@ import interfaces.I_board;
 public class Board implements I_board {
 	
 public Piece [] [] board= new Piece [4] [4];
-	@Override
-	public void loadBoard(String path) throws PieceConfigurationException {
-	try
+/**
+ *  Loads placed pieces on the board.
+ *  @param path		contains board file's path.
+ *  @throws BoardConfigurationException		Gets threw when an error occurs into board file.
+ *  @throws	IOException										Gets threw when an error occurs searching or trying to read the board file.
+ */
+@Override
+	public void loadBoard(String path) throws BoardConfigurationException, IOException {
+		try
 	{
-		File boardfile=new File(path); 	/**Creates file-reader variables.*/
-		if(boardfile.exists()) /** if file exists*/
+		File boardfile=new File(path); 	//Creates file-reader variables.
+		if(boardfile.exists())
 		{
-				FileReader br=new FileReader(boardfile);  /**opens file, reading mode*/
+				FileReader br=new FileReader(boardfile);  //opens file, reading mode
 				BufferedReader boardReader= new BufferedReader(br);
 				String app;
 				int cont=0;
-				while(((app=boardReader.readLine())!= null) && cont<5 ) /** while i'm actually reading something and if i've still not read more than 4 lines i put the value of that line in app*/
-				{//read a whole row, split it , fill an array of strings called 4ex: row. ---> Split: String [] row= app.Split(' ');
-					String[] row=app.split(" "); /**Splits the read line, each row's cell has now a piece a string which should embody a piece or a white space.*/
-					for(int c=0; c<4;c++)  /**scans each row's cells and checks its actual value, if  it's okay it becomes a piece on the board.*/
-					{  // calls an input-checking method 4ex: boolean okay= checkInput( app )
-						// if it's okay then i can insert values into the board.
-						//puts the values into the board. 4ex: board[r,c]=row[c];
+				while(((app=boardReader.readLine())!= null) && cont<5 ) //while i'm actually reading something and if i've still not read more than 4 lines i put the value of that line in app
+				{	String[] row=app.split(" "); 
+					//scans each row's cells and checks its actual value, if  it's okay it becomes a piece on the board.
+					for(int c=0; c<4;c++)  
+					{  
+					try{
 						Piece p=Piece.checkAndCreate(row[c]);
+					}
+					catch(PieceConfigurationException e)
+					{
+						throw new BoardConfigurationException(e.getMessage());
+					}
+					
 					if(p!=null)
 						{
 								boolean placed=isPlaced(p); 
 								if(placed)
 								{
-									//throws exception: Piece is already placed
+									throw new BoardConfigurationException("This piece is already placed!"); 
 								} else{
 									board[cont][c]=p;
 								}
@@ -47,11 +60,11 @@ public Piece [] [] board= new Piece [4] [4];
 			boardReader.close();
 		}
 		else{
-			//throws exception, file doesn't exist.
+			throw new IOException("File doesn't exist."); //throws exception, file doesn't exist.
 		}
 	}
 	 catch(IOException e){  //Throws exception: input error
-		
+		throw new IOException(e.getMessage());
 	}
 		
 	}
@@ -61,9 +74,12 @@ public Piece [] [] board= new Piece [4] [4];
 	 */
 	@Override
 	public void saveBoard(String path) throws IOException { /**Saves board's new configuration*/
-		FileWriter fw=new FileWriter(path);
-		BufferedWriter out=new BufferedWriter(fw);
+		FileWriter fw;
+		BufferedWriter out;
 		
+	try{
+		fw=new FileWriter(path);
+		out= new BufferedWriter(fw);
 		for(int i=0;i<4;i++){
 			for(int j=0;j<4;j++){
 				if(board[i][j]==null)  //If it's null it's a white space.
@@ -75,6 +91,18 @@ public Piece [] [] board= new Piece [4] [4];
 		}
 		out.flush();
 		out.close();
+	}
+	catch(IOException e){
+		try{
+		out.flush();
+		out.close();
+		} catch(Exception ex){
+		
+		}finally{ throw new IOException(e.getMessage()); }  
+			
+		
+	}
+	}
 	}
 
 	@Override
