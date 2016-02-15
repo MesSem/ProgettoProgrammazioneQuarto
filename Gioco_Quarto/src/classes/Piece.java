@@ -17,17 +17,8 @@ public class Piece implements I_piece {
 	private char colour;
 	private char shape;
 	private char volume;
-	
-	
-	
-	/*public Piece(Size size, Colour colour, Shape shape, Volume volume){
-		this.size=size;
-		this.colour=colour;
-		this.shape=shape;
-		this.volume=volume;
-			}*/
-	
-	public Piece(char [] c){
+
+	public Piece(char [] c){ /**Constructor*/
 		size=c[0];
 		colour=c[1];
 		shape=c[2];
@@ -39,7 +30,7 @@ public class Piece implements I_piece {
 	//*****************************
 	//***************************
 //#ATTENTION #TODO attenzione, da ok anche se c'è un asterisco, non va sempre bene, se è chiamato da table, asterico deve essere segnato come errore
-	static Piece checkAndCreate(String pieceDescription) throws PieceConfigurationException {
+	static Piece checkAndCreate(String pieceDescription) throws PieceConfigurationException {/**Creates a new piece it is an actual piece.*/
 		char[] analyzedPiece=pieceDescription.toCharArray();
 		String tmpPiece=""; //contains  letters which compose the piece, after i've checked them 
 		int i=0;
@@ -105,7 +96,7 @@ public class Piece implements I_piece {
 
 
 	@Override
-	public boolean isEqualTo(Piece p) {  //Checks if an input-given piece is equal to the another piece.
+	public boolean isEqualTo(Piece p) {  /**Checks if an input-given piece is equal to the current piece.*/
 		// TODO Auto-generated method stub
 		if( (this.colour==p.colour)&& (this.size==p.size)&& (this.volume==p.volume)&&(this.shape==p.shape) )
 		return true;
@@ -117,7 +108,7 @@ public class Piece implements I_piece {
 		return   new StringBuilder().append(size).append(colour).append(shape).append(volume).toString();
 	}
 
-	static boolean victory(Piece p0,Piece p1, Piece p2, Piece p3){  //***Da eliminare*** potrebbe dare errore bcs le variabili son private
+	static boolean victory(Piece p0,Piece p1, Piece p2, Piece p3){  /**Checks if 4 input-given pieces have something in common*/
 	 
 		if( ( (p0.colour==p1.colour)&&(p0.colour==p2.colour) && (p0.colour==p3.colour) )  
 				|| ( (p0.size==p1.size)&&(p0.size==p2.size) && (p0.size==p3.size))
