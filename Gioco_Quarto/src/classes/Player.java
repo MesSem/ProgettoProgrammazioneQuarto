@@ -62,7 +62,7 @@ public class Player {
 		} catch (IOException e) {
 			message = e.getMessage();
 			messageNumber = 11;
-		} catch (PieceConfigurationException e) {
+		} catch (NotUsedPieceConfigurationException e) {
 			message = e.getMessage();
 			messageNumber = 12;
 		} catch (BoardConfigurationException e) {

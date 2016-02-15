@@ -18,7 +18,7 @@ public class Table implements I_table {
 
 	Board board;
 
-	public Table(String pathBoardFile, String pathNotUsedPiecesFile) throws PieceConfigurationException, IOException {
+	public Table(String pathBoardFile, String pathNotUsedPiecesFile) throws NotUsedPieceConfigurationException, IOException {
 		// Preparation of the board
 		board = new Board();
 		board.loadBoard(pathBoardFile);
@@ -36,7 +36,7 @@ public class Table implements I_table {
 	 * @throws PieceConfigurationException
 	 * @throws IOException
 	 */
-	public void loadNotUsedPieces(String path) throws PieceConfigurationException, IOException {
+	public void loadNotUsedPieces(String path) throws NotUsedPieceConfigurationException, IOException {
 		String line = "";
 		Piece tmp;
 
@@ -45,19 +45,27 @@ public class Table implements I_table {
 		BufferedReader in = new BufferedReader(fr);
 		String firstPiece = in.readLine();
 		if (firstPiece != null) {
-			tmp = Piece.checkAndCreate(firstPiece);
+			try {
+				tmp = Piece.checkAndCreate(firstPiece);
+			} catch (PieceConfigurationException er) {
+				throw new NotUsedPieceConfigurationException(er.getMessage());
+			}
 			if (!(board.isPlaced(tmp)))
-				pieceToPosition=tmp;
+				pieceToPosition = tmp;
 			else
-				throw new PieceConfigurationException("This piece " + line + " is already in the board ");
+				throw new NotUsedPieceConfigurationException("This piece " + line + " is already in the board ");
 		} else
-			throw new PieceConfigurationException("No piece on file " + path);
+			throw new NotUsedPieceConfigurationException("No piece on file " + path);
 		while ((line = in.readLine()) != null) {
-			tmp = Piece.checkAndCreate(line);
+			try {
+				tmp = Piece.checkAndCreate(line);
+			} catch (PieceConfigurationException er) {
+				throw new NotUsedPieceConfigurationException(er.getMessage());
+			}
 			if (!(board.isPlaced(tmp)))
 				pieceNotUsed.add(tmp);
 			else
-				throw new PieceConfigurationException("This piece " + line + " is already in the board ");
+				throw new NotUsedPieceConfigurationException("This piece " + line + " is already in the board ");
 		}
 
 		in.close();
@@ -71,14 +79,15 @@ public class Table implements I_table {
 	/**
 	 * #TODO: It must be checked #TODO: Add check if piece is already in list
 	 * piecenotused
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
 	@Override
 	public void savePieces(String path) throws IOException {
-		FileWriter fw=new FileWriter(path);
-		BufferedWriter out=new BufferedWriter(fw);
+		FileWriter fw = new FileWriter(path);
+		BufferedWriter out = new BufferedWriter(fw);
 		out.write(pieceToPosition.toString());
-		String s=pieceToPosition.toString();
+		String s = pieceToPosition.toString();
 		for (Piece piece : pieceNotUsed) {
 			out.newLine();
 			out.write(piece.toString());
