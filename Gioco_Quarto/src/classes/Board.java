@@ -69,7 +69,7 @@ public Piece [] [] board= new Piece [4] [4];
 		for(int i=0;i<4;i++){
 			for(int j=0;j<4;j++){
 				if(board[i][j]==null)
-					out.write("* ");
+					out.write("**** ");
 				else
 				out.write(board[i][j].toString()+" ");
 			}

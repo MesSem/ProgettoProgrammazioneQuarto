@@ -148,7 +148,7 @@ public class Player {
 							}
 							alpha = Math.max(alpha, result);
 						} else {
-							beta = Math.min(beta, result * -1);
+							beta = Math.min(beta, (result * -1));
 						}
 					}
 					board.removePieceAtPosition(i);
@@ -158,16 +158,16 @@ public class Player {
 			for (int k = 0; k < freePiece.size(); k++) {
 				Piece pieceForEnemy = freePiece.get(k);
 				freePiece.remove(k);
-				result = nextMove(board, freePiece, pieceForEnemy, !turno, depth++, alpha, beta);
+				result = nextMove(board, freePiece, pieceForEnemy, !turno, depth+1, alpha, beta);
 
 				if (turno) {
-					if (alpha >= result && depth == 0) {// solo se sono al primo
+					if (alpha <=result && depth == 0) {// solo se sono al primo
 														// livello, sennò non mi
 														// interessa
 						indexBestPieceForEnemy = k;
-						if (alpha == 1){
+						if (result == 1){
 							freePiece.add(k, pieceForEnemy);
-							return alpha;
+							return result;
 							}
 					}
 					alpha = Math.max(alpha, result);
