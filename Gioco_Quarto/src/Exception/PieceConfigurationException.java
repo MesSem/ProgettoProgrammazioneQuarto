@@ -9,11 +9,4 @@ public class PieceConfigurationException extends Exception {
 		super(message);
 	}
 
-	public PieceConfigurationException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public PieceConfigurationException(Throwable cause) {
-		super(cause);
-	}
 }

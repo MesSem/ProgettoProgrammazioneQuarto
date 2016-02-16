@@ -9,11 +9,4 @@ public class BoardConfigurationException extends Exception {
 		super(message);
 	}
 
-	public BoardConfigurationException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public BoardConfigurationException(Throwable cause) {
-		super(cause);
-	}
 }

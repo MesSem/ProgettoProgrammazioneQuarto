@@ -9,11 +9,4 @@ public class NotUsedPieceConfigurationException extends Exception {
 		super(message);
 	}
 
-	public NotUsedPieceConfigurationException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public NotUsedPieceConfigurationException(Throwable cause) {
-		super(cause);
-	}
 }
