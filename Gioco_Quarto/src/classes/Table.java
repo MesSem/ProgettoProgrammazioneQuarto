@@ -49,10 +49,11 @@ public class Table implements I_table {
 	}
 
 	/**
+	 * Load the Piece not used yet in the Table
 	 * 
-	 * @param path
-	 * @throws PieceConfigurationException
-	 * @throws IOException
+	 * @param path	of the file where is the data about the piece not used yet
+	 * @throws PieceConfigurationException	if there is some error inside the file
+	 * @throws IOException	if there are some I/O exceptions
 	 */
 	public void loadNotUsedPieces(String path) throws NotUsedPieceConfigurationException, IOException {
 		String line = "";
@@ -66,7 +67,7 @@ public class Table implements I_table {
 			String firstPiece = in.readLine();
 			if (firstPiece != null) {
 				try {
-					tmp = Piece.checkAndCreate(firstPiece);
+					tmp = Piece.checkAndCreate(firstPiece, false);
 				} catch (PieceConfigurationException er) {
 					throw new NotUsedPieceConfigurationException(er.getMessage());
 				}
@@ -78,7 +79,7 @@ public class Table implements I_table {
 				throw new NotUsedPieceConfigurationException("No piece on file " + path);
 			while ((line = in.readLine()) != null) {
 				try {
-					tmp = Piece.checkAndCreate(line);
+					tmp = Piece.checkAndCreate(line, false);
 				} catch (PieceConfigurationException er) {
 					throw new NotUsedPieceConfigurationException(er.getMessage());
 				}
