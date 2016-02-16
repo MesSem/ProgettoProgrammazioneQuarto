@@ -57,6 +57,8 @@ public class Player {
 				case 13:
 				case 12:
 				case 11:
+				case 10:
+				case 9:
 					maxDepth = 5;
 					break;
 				default:
