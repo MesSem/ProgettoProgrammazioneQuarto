@@ -6,7 +6,7 @@ import interfaces.I_piece;
 /**
  * This class stand for a single piece of the game
  * 
- * @author Morettini and Candelaresi
+ * @author Candelaresi
  *
  */
 public class Piece implements I_piece {
