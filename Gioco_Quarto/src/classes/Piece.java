@@ -4,7 +4,7 @@ import Exception.PieceConfigurationException;
 import interfaces.I_piece;
 
 /**
- * This class stand for a single piece of the game
+ * This class stands for a single piece
  * 
  * @author Candelaresi
  *
@@ -20,7 +20,7 @@ public class Piece implements I_piece {
 	 * Constructor
 	 * 
 	 * @param c
-	 *            char array with the characteristic in this order:
+	 *            char array with the following characteristics, in this precise order:
 	 *            size-color-shape-volume
 	 */
 	public Piece(char[] c) {
@@ -31,20 +31,21 @@ public class Piece implements I_piece {
 	}
 
 	/**
-	 * It try to create a new piece after some checks. It's static because it
-	 * give the opportunity to create a new piece whit correct data without
-	 * create before a Piece object
-	 * 
+	 * Tries to create a new piece after some checks have been made. 
+	 *We've made it 'static' because it allows us to check
+	 *some parameters before we call the constructor method
+	 *which is called inside this method.
+	*
 	 * NOTA PER ENRICO: COSA NE PENSI DELLA COSA DEL'ASTERISCO? MEGLIO METTERE
 	 * UN CONTROLLO IN TABLE O LASCIARE COSÌ?
 	 * 
 	 * @param pieceDescription
-	 *            the string with data for create the new object
+	 *          contains data to create a new object
 	 * @param asteriskAccepted
-	 *            if the asterisk ("*") could be accepted(true) or not(false)
+	 *            if the asterisk ("*") can be accepted(true) or not(false)
 	 * @return the piece created
 	 * @throws PieceConfigurationException
-	 *             if there are some error in the String received to create the
+	 *             if  any error occurs in the String received to create the
 	 *             piece
 	 */
 	static Piece checkAndCreate(String pieceDescription, boolean asteriskAccepted) throws PieceConfigurationException {
@@ -129,7 +130,7 @@ public class Piece implements I_piece {
 	 * Checks if an input-given piece is equal to the current piece.
 	 * 
 	 * @param p
-	 *            piece you want to compare with
+	 *            The piece you want to compare the current piece with
 	 * @return true if they are equal, false otherwise
 	 */
 	@Override
@@ -142,7 +143,7 @@ public class Piece implements I_piece {
 	}
 
 	/**
-	 * Get the object characteristics as String
+	 * Gets the object characteristics as String
 	 * 
 	 * @return The object characteristic in String format
 	 */
@@ -155,13 +156,13 @@ public class Piece implements I_piece {
 	 * Checks if 4 input-given pieces have something in common
 	 * 
 	 * @param p0
-	 *            Piece one
+	 *            Piece #one
 	 * @param p1
-	 *            Piece two
+	 *            Piece #two
 	 * @param p2
-	 *            Piece three
+	 *            Piece #three
 	 * @param p3
-	 *            Piece four
+	 *            Piece #four
 	 * @return true if there are something in common, false otherwise
 	 */
 	static boolean victory(Piece p0, Piece p1, Piece p2, Piece p3) {
