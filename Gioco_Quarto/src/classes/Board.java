@@ -15,7 +15,7 @@ import Exception.PieceConfigurationException;
 import interfaces.I_board;
 
 /**
- * This class stand for the board where players play Quarto!
+ * This class represent the board where players play to Quarto!
  * 
  * @author Candelaresi
  *
@@ -26,7 +26,7 @@ public class Board implements I_board {
 	public Piece[][] board = new Piece[4][4];
 
 	/**
-	 * Loads placed pieces on the board.
+	 * Loads placed pieces in the board.
 	 * 
 	 * @param path
 	 *            contains board file's path.
@@ -97,7 +97,7 @@ public class Board implements I_board {
 	}
 
 	/**
-	 * It save board's new configuration in a file
+	 * It saves board's new configuration in a file
 	 * 
 	 * @param path
 	 *            location and name of the file where you want to save the data
@@ -140,10 +140,10 @@ public class Board implements I_board {
 
 	/**
 	 * It checks if the game is ended or not. There are three possible
-	 * situation: <br>
-	 * 0= the game is ended in parity <br>
-	 * 1= the game is ended and the current player is the winner <br>
-	 * 1000= the game isn't ended <br>
+	 * situations: <br>
+	 * 0= the game is ended with a tie <br>
+	 * 1= the game has ended and the current player is the winner <br>
+	 * 1000= the game hasn't ended <br>
 	 * 
 	 * @return The situation of the game
 	 */
@@ -176,20 +176,20 @@ public class Board implements I_board {
 			if (Piece.victory(board[0][3], board[1][2], board[2][1], board[3][0]))
 				return 1;
 
-		// Checks if there are empty space
+		// Checks if there are empty spaces
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 4; j++)
 				if (board[i][j] == null)
-					return 1000;// There are some empty space, the game isn't
+					return 1000;// There are some empty spaces, the game hasn't
 								// ended
-		// The game is ended with parity
+		// The game has  ended with a tie
 		return 0;
 	}
 
 	/**
-	 * It get the size of the board, the numbers of box of the board: row*column
+	 *Gets board's size: row*column
 	 * 
-	 * @return the size of the board
+	 * @return board's size
 	 */
 	@Override
 	public int size() {
@@ -198,8 +198,8 @@ public class Board implements I_board {
 
 	/**
 	 * Checks if a position on the board is empty or not<br>
-	 * IMPORTANT: The position for simplify the code of the class Player is an
-	 * integer that index the matrix like a vector <br>
+	 * IMPORTANT: Position is given as an integer which stands for an array index
+	 * to simplify  Player class' code.<br>
 	 * Matrix <br>
 	 * 0__1__2__3<br>
 	 * 4__5__6__7<br>
@@ -208,7 +208,7 @@ public class Board implements I_board {
 	 * 
 	 * @param position
 	 *            position to check
-	 * @return true if the position is empty, false overwhise
+	 * @return true if the position is empty, false otherwise
 	 */
 	@Override
 	public boolean isFree(int position) {
@@ -226,8 +226,8 @@ public class Board implements I_board {
 
 	/**
 	 * Places a piece into a certain position into the board<br>
-	 * IMPORTANT: The position for simplify the code of the class Player is an
-	 * integer that index the matrix like a vector <br>
+	 * IMPORTANT: Position is given as an integer which stands for an array index
+	 * to simplify  Player class' code.<br>
 	 * Matrix <br>
 	 * 0__1__2__3<br>
 	 * 4__5__6__7<br>
@@ -235,9 +235,9 @@ public class Board implements I_board {
 	 * 12_13_14_15<br>
 	 * 
 	 * @param piece
-	 *            object to position
+	 *            object to place
 	 * @param position
-	 *            array index where you want to position the piece
+	 *            array's index where you want to place the piece
 	 */
 	@Override
 	public void putPieceAtPosition(Piece piece, int position) {
@@ -249,8 +249,8 @@ public class Board implements I_board {
 
 	/**
 	 * Assigns "null" as value to the input-given board's position<br>
-	 * IMPORTANT: The position for simplify the code of the class Player is an
-	 * integer that index the matrix like a vector <br>
+	 * IMPORTANT: Position is given as an integer which stands for an array index
+	 * to simplify  Player class' code.<br>
 	 * Matrix <br>
 	 * 0__1__2__3<br>
 	 * 4__5__6__7<br>
@@ -268,9 +268,9 @@ public class Board implements I_board {
 	}
 
 	/**
-	 * Check if a piece is already placed in the board<br>
-	 * IMPORTANT: The position for simplify the code of the class Player is an
-	 * integer that index the matrix like a vector <br>
+	 * Checks if a piece is already placed on the board<br>
+	 * IMPORTANT: Position is given as an integer which stands for an array index
+	 * to simplify  Player class' code.<br>
 	 * Matrix <br>
 	 * 0__1__2__3<br>
 	 * 4__5__6__7<br>
@@ -278,7 +278,7 @@ public class Board implements I_board {
 	 * 12_13_14_15<br>
 	 * 
 	 * @param p
-	 *            Piece you want to check if is placed
+	 *            The Piece you want to check
 	 * @return true if is already placed, false otherwise
 	 */
 	public boolean isPlaced(Piece p) {
@@ -296,7 +296,7 @@ public class Board implements I_board {
 	 * an array because it's passed by references.
 	 * 
 	 * @param index
-	 *            it's a vector contains in the first position the array index
+	 *            it's a vector which contains in the first position the array index
 	 *            and then it insert in the first position the x-index and in
 	 *            the second position the y-index
 	 */
