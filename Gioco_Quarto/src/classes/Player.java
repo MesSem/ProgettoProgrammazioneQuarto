@@ -8,6 +8,7 @@ import javax.sql.rowset.serial.SerialArray;
 
 import Exception.BoardConfigurationException;
 import Exception.NotUsedPieceConfigurationException;
+import Exception.PieceConfigurationException;
 
 public class Player {
 
@@ -25,6 +26,7 @@ public class Player {
 
 		int messageNumber = 0;
 		String message = "";
+		int result;
 
 		try {
 			t = new Table(pathBoardFile, pathNotUsedPiece);
@@ -50,14 +52,11 @@ public class Player {
 				switch (pieceNotUsed.size()) {
 				case 15:
 				case 14:
+					maxDepth = 2;
+					break;
 				case 13:
 				case 12:
 				case 11:
-					maxDepth = 2;
-					break;
-				case 10:
-				case 9:
-				case 8:
 					maxDepth = 5;
 					break;
 				default:
@@ -67,7 +66,7 @@ public class Player {
 				// Invocation of the brain of the Player. The value in result
 				// show the maximum result that current player could achieve at
 				// the end of the game from the current situation
-				int result = nextMove(board, pieceNotUsed, toPosition, true, 0, -999, +999);
+				result = nextMove(board, pieceNotUsed, toPosition, true, 0, -999, +999);
 
 				// Now all the changes area apply at the structure in the table
 				// and all data will being saved
@@ -92,7 +91,7 @@ public class Player {
 				messageNumber = 1;
 				break;
 			case 1000:
-				message = "continuare pos" + indexBestPosition;
+				message = "continuare pos" + indexBestPosition + " " + result;
 				messageNumber = 0;
 				break;
 			default:
@@ -170,24 +169,25 @@ public class Player {
 			for (int i = 0; i < board.size(); i++) {
 				if (board.isFree(i)) {
 					board.putPieceAtPosition(toPosition, i);
-
 					result = board.gameSituation();
 					// The if check if with the positioning the game is ended
 					if (result == 1000) {
 						if (turn) {
+							//#TODO:per simone, controllare i successivi commenti
+							int res=nextMove(board, freePiece, null, turn, depth, alpha, beta);
 							// If the algorithm is at the top level, the turn is
 							// of the program and the result in this branch is
 							// better than the result of other branch, it save
 							// the index of the position
-							if (result >= alpha && depth == 0) {
+							if (res > alpha && depth == 0) {
 								indexBestPosition = i;
 								// Since this branch give win and it's at the
 								// top level, the algorithm could stop now.
 								// Before the return it remove the piece added
 								// to transform the board as the beginning
-								if (result == 1) {
+								if (res == 1) {
 									board.removePieceAtPosition(i);
-									return result;
+									return res;
 								}
 							}
 							// If the algorithm isn't at the top level and the
@@ -195,7 +195,7 @@ public class Player {
 							// alpha the maximum score between the score archive
 							// in the other branch of this level and the score
 							// that it will achieve in below level
-							alpha = Math.max(alpha, nextMove(board, freePiece, null, turn, depth, alpha, beta));
+							alpha = Math.max(alpha,res );
 							if (beta <= alpha) {
 								board.removePieceAtPosition(i);
 								// This node will return alpha, but since in the
@@ -212,7 +212,7 @@ public class Player {
 							// in the other branch of this level and the score
 							// that it will achieve in below level
 							beta = Math.min(beta, nextMove(board, freePiece, null, turn, depth, alpha, beta));
-							if (alpha <= beta) {
+							if (alpha >= beta) {
 								// This node will return beta, but since in the
 								// higher level there is a branch with a higher
 								// points, the program will choose the other
@@ -227,7 +227,7 @@ public class Player {
 							// Like previously, if it's a top level, and there
 							// is a good result, the position index will being
 							// saved
-							if (result >= alpha && depth == 0) {
+							if (result > alpha && depth == 0) {
 								indexBestPosition = i;
 								if (result == 1) {
 									board.removePieceAtPosition(i);
@@ -258,7 +258,7 @@ public class Player {
 				if (turn) {
 					// If it's the top level and there is a good result, the
 					// index it's saved
-					if (alpha <= result && depth == 0) {
+					if (alpha < result && depth == 0) {
 						indexBestPieceForEnemy = k;
 						if (result == 1) {
 							freePiece.add(k, pieceForEnemy);
@@ -272,7 +272,7 @@ public class Player {
 					}
 				} else {
 					beta = Math.min(beta, result);
-					if (alpha <= beta) {
+					if (alpha >= beta) {
 						freePiece.add(k, pieceForEnemy);
 						break;
 					}
