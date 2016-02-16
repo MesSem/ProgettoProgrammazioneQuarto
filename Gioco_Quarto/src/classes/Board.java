@@ -14,8 +14,15 @@ import Exception.BoardConfigurationException;
 import Exception.PieceConfigurationException;
 import interfaces.I_board;
 
+/**
+ * This class stand for the board where players play Quarto!
+ * 
+ * @author Candelaresi
+ *
+ */
 public class Board implements I_board {
 
+	// Is the board where the players put the pieces
 	public Piece[][] board = new Piece[4][4];
 
 	/**
@@ -31,13 +38,14 @@ public class Board implements I_board {
 	 */
 	@Override
 	public void loadBoard(String path) throws BoardConfigurationException, IOException {
+		BufferedReader boardReader = null;
 		try {
 			// Creates file-reader variables.
 			File boardfile = new File(path);
 			if (boardfile.exists()) {
 				// opens file, reading mode
 				FileReader br = new FileReader(boardfile);
-				BufferedReader boardReader = new BufferedReader(br);
+				boardReader = new BufferedReader(br);
 				String app;
 				int cont = 0;
 				// while i'm actually reading something and if i've still not
@@ -51,6 +59,8 @@ public class Board implements I_board {
 							Piece p = Piece.checkAndCreate(row[c], true);
 
 							if (p != null) {
+								// check if the piece is already placed in the
+								// board
 								boolean placed = isPlaced(p);
 								if (placed) {
 									throw new BoardConfigurationException("This piece is already placed!");
@@ -59,6 +69,8 @@ public class Board implements I_board {
 								}
 							}
 						} catch (PieceConfigurationException e) {
+							// The PieceConfigurationException is checked and it
+							// throw a more specific exception
 							throw new BoardConfigurationException(e.getMessage());
 						}
 					}
@@ -66,25 +78,35 @@ public class Board implements I_board {
 				}
 				boardReader.close();
 			} else {
-				// throws exception, file doesn't exist.
 				throw new IOException("File doesn't exist.");
 			}
 		} catch (IOException e) {
-			// Throws exception: input error
-			throw new IOException(e.getMessage());
+			throw e;
+		} catch (BoardConfigurationException er) {
+			throw er;
+		} finally {
+			// If there was some exception the code try to close the Buffer
+			// before to go forward
+			try {
+				boardReader.close();
+			} catch (Exception err) {
+
+			}
 		}
 
 	}
 
 	/**
-	 * It save the board in a file
+	 * It save board's new configuration in a file
 	 * 
 	 * @param path
 	 *            location and name of the file where you want to save the data
+	 * @throws IOException
+	 *             gets threw when an error occurs searching or trying to read
+	 *             the board file.
 	 */
 	@Override
-	public void saveBoard(String path)
-			throws IOException { /** Saves board's new configuration */
+	public void saveBoard(String path) throws IOException {
 		FileWriter fw;
 		BufferedWriter out = null;
 
@@ -101,21 +123,19 @@ public class Board implements I_board {
 				}
 				out.newLine();
 			}
-			out.flush();
-			out.close();
 		} catch (IOException e) {
-			// If there was some error I try to close the output-stream and then
-			// I throw again the exception
+			throw new IOException(e.getMessage());
+		} finally {
+			// If there was some error or not, I try to close the output-stream 
 			try {
+				//the flush method is to force the writing of all data in the buffer
 				out.flush();
 				out.close();
 			} catch (Exception ex) {
 
-			} finally {
-				throw new IOException(e.getMessage());
 			}
-
 		}
+
 	}
 
 	/**
@@ -132,33 +152,38 @@ public class Board implements I_board {
 		// scans each row and column of the board, checking if there's any
 		// victory .
 		for (int i = 0; i < 4; i++) {
-			// Checks if there actually are pieces in those positions
-			if ((board[i][0] != null) && (board[i][1] != null) && (board[i][2] != null) && (board[i][3] != null))
+			// Checks if there actually are pieces in those positions, In the
+			// first if, the index i is used to scan the different row #TODO:
+			// ROW OR COLUMN?
+			if ((board[i][0] != null) && (board[i][1] != null) && (board[i][2] != null) && (board[i][3] != null)) {
 				// Checks if those pieces have something in common
 				if (Piece.victory(board[i][0], board[i][1], board[i][2], board[i][3]))
 					return 1; // if they all have something in common you win.
+			}
 
-			// Checks if there actually are pieces in those positions
-			if ((board[0][i] != null) && (board[1][i] != null) && (board[2][i] != null) && (board[3][i] != null))
-				// Checks if those pieces have something in common
+			// Same procedure of the first if but using i for scan the different
+			// column
+			if ((board[0][i] != null) && (board[1][i] != null) && (board[2][i] != null) && (board[3][i] != null)) {
 				if (Piece.victory(board[0][i], board[1][i], board[2][i], board[3][i]))
-					return 1; // if they all have something in common you win.
+					return 1;
+			}
 		}
-		// Checks diagonal
+		// Checks diagonals
 		if ((board[0][0] != null) && (board[1][1] != null) && (board[2][2] != null) && (board[3][3] != null))
 			if (Piece.victory(board[0][0], board[1][1], board[2][2], board[3][3]))
-				return 1; // win
-		// Checks diagonal
+				return 1;
 		if ((board[0][3] != null) && (board[1][2] != null) && (board[2][1] != null) && (board[3][0] != null))
 			if (Piece.victory(board[0][3], board[1][2], board[2][1], board[3][0]))
 				return 1;
-		// Checks if there are void space
+
+		// Checks if there are empty space
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 4; j++)
 				if (board[i][j] == null)
-					return 1000;// There are some void space, the game isn't
+					return 1000;// There are some empty space, the game isn't
 								// ended
-		return 0;// The game is ended with parity
+		// The game is ended with parity
+		return 0;
 	}
 
 	/**
@@ -172,14 +197,14 @@ public class Board implements I_board {
 	}
 
 	/**
-	 * checks if a position on the board is empty or not<br>
+	 * Checks if a position on the board is empty or not<br>
 	 * IMPORTANT: The position for simplify the code of the class Player is an
 	 * integer that index the matrix like a vector <br>
 	 * Matrix <br>
-	 * 0 1 2 3<br>
-	 * 4 5 6 7<br>
-	 * 8 9 10 11<br>
-	 * 12 13 14 15<br>
+	 * 0__1__2__3<br>
+	 * 4__5__6__7<br>
+	 * 8__9__10_11<br>
+	 * 12_13_14_15<br>
 	 * 
 	 * @param position
 	 *            position to check
@@ -202,7 +227,12 @@ public class Board implements I_board {
 	/**
 	 * Places a piece into a certain position into the board<br>
 	 * IMPORTANT: The position for simplify the code of the class Player is an
-	 * integer that index the matrix like a vector
+	 * integer that index the matrix like a vector <br>
+	 * Matrix <br>
+	 * 0__1__2__3<br>
+	 * 4__5__6__7<br>
+	 * 8__9__10_11<br>
+	 * 12_13_14_15<br>
 	 * 
 	 * @param piece
 	 *            object to position
@@ -218,23 +248,34 @@ public class Board implements I_board {
 	}
 
 	/**
-	 * Assigns "null" as value to the input-given board's position
+	 * Assigns "null" as value to the input-given board's position<br>
+	 * IMPORTANT: The position for simplify the code of the class Player is an
+	 * integer that index the matrix like a vector <br>
+	 * Matrix <br>
+	 * 0__1__2__3<br>
+	 * 4__5__6__7<br>
+	 * 8__9__10_11<br>
+	 * 12_13_14_15<br>
 	 * 
 	 * @param position
 	 *            where you want to remove the piece
-	 * @return Piece removed
 	 */
 	@Override
-	public Piece removePieceAtPosition(int position) {
+	public void removePieceAtPosition(int position) {
 		int[] index = { position, -1 };
 		convertIndex(index);
 		board[index[0]][index[1]] = null;
-
-		return null;
 	}
 
 	/**
-	 * Check if a piece is already placed in the board
+	 * Check if a piece is already placed in the board<br>
+	 * IMPORTANT: The position for simplify the code of the class Player is an
+	 * integer that index the matrix like a vector <br>
+	 * Matrix <br>
+	 * 0__1__2__3<br>
+	 * 4__5__6__7<br>
+	 * 8__9__10_11<br>
+	 * 12_13_14_15<br>
 	 * 
 	 * @param p
 	 *            Piece you want to check if is placed
