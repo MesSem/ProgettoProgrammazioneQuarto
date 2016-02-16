@@ -15,8 +15,15 @@ import Exception.PieceConfigurationException;
 import interfaces.I_piece;
 import interfaces.I_table;
 
+/**
+ * The table stand for the physical table/desk where there are the board and the
+ * piece not already placed in the board. It contains some methods to work
+ * indirectly with the board and with the piece not already used
+ * 
+ * @author Morettini
+ *
+ */
 public class Table implements I_table {
-
 	ArrayList<Piece> pieceNotUsed;
 	Piece pieceToPosition;
 
@@ -51,9 +58,12 @@ public class Table implements I_table {
 	/**
 	 * Load the Piece not used yet in the Table
 	 * 
-	 * @param path	of the file where is the data about the piece not used yet
-	 * @throws PieceConfigurationException	if there is some error inside the file
-	 * @throws IOException	if there are some I/O exceptions
+	 * @param path
+	 *            of the file where is the data about the piece not used yet
+	 * @throws PieceConfigurationException
+	 *             if there is some error inside the file
+	 * @throws IOException
+	 *             if there are some I/O exceptions
 	 */
 	public void loadNotUsedPieces(String path) throws NotUsedPieceConfigurationException, IOException {
 		String line = "";
@@ -62,11 +72,14 @@ public class Table implements I_table {
 		FileReader fr;
 		try {
 			fr = new FileReader(path);
-
 			in = new BufferedReader(fr);
+			// The first line of the file contains the data of the piece that
+			// the player have to position, so I put in a special variable
 			String firstPiece = in.readLine();
 			if (firstPiece != null) {
 				try {
+					// AT checkAndCreate I pass the String data and false
+					// because I want a not null piece
 					tmp = Piece.checkAndCreate(firstPiece, false);
 				} catch (PieceConfigurationException er) {
 					throw new NotUsedPieceConfigurationException(er.getMessage());
@@ -76,13 +89,16 @@ public class Table implements I_table {
 				else
 					throw new NotUsedPieceConfigurationException("This piece " + line + " is already in the board ");
 			} else
-				throw new NotUsedPieceConfigurationException("No piece on file " + path);
+				throw new NotUsedPieceConfigurationException("No pieces on file " + path);
+			// Now I store all the other Piece in the list pieceNotUsed
 			while ((line = in.readLine()) != null) {
 				try {
 					tmp = Piece.checkAndCreate(line, false);
 				} catch (PieceConfigurationException er) {
 					throw new NotUsedPieceConfigurationException(er.getMessage());
 				}
+				// The if check if the piece is already in the board or in other
+				// structure in the Table
 				if (!board.isPlaced(tmp) && !isPlaced(tmp))
 					pieceNotUsed.add(tmp);
 				else
@@ -90,12 +106,14 @@ public class Table implements I_table {
 			}
 			in.close();
 		} catch (IOException e) {
+			throw e;
+		} catch (NotUsedPieceConfigurationException er) {
+			throw er;
+		} finally {
 			try {
 				in.close();
 			} catch (Exception er) {
-			} finally {
 			}
-			throw e;
 		}
 	}
 
@@ -131,15 +149,14 @@ public class Table implements I_table {
 				out.newLine();
 				out.write(piece.toString());
 			}
-			out.flush();
-			out.close();
 		} catch (IOException e) {
+			throw e;
+		} finally {
 			try {
 				out.flush();
 				out.close();
 			} catch (Exception er) {
 			}
-			throw e;
 		}
 	}
 
@@ -186,11 +203,8 @@ public class Table implements I_table {
 	}
 
 	/**
-	 * Remove a piece in the board in the specified position. The position is
-	 * calculated as the matrix is like a vector.
+	 * Remove a piece in the list of pieces not used in the specified position.
 	 * 
-	 * @param p
-	 *            piece to position
 	 * @param position
 	 *            index of the position where the method have to remove the
 	 *            piece
@@ -198,14 +212,11 @@ public class Table implements I_table {
 	@Override
 	public void removePieceNotUsedAtPosition(int position) {
 		pieceNotUsed.remove(position);
-
 	}
 
 	/**
-	 * Insert a piece in the board in the specified position. The position is
-	 * calculated as the matrix is like a vector.//PER ENRICO, DENTRO BOARD
-	 * METTERE QUALCOSA PER SPIEGARE LA TRASFORMAZIONE DA VETTORE A MATRICE.
-	 * cHIEDI A SIMONE PER CAHIRIMENTI SU COSA INTENDO
+	 * Insert a piece in the board in the specified position. The position is an
+	 * index about a vector, Board will calculate the respective matrix index
 	 * 
 	 * @param p
 	 *            piece to position
