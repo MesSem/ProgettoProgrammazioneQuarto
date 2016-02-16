@@ -1,5 +1,6 @@
 package classes;
 
+import Exception.PieceConfigurationException;
 import interfaces.I_piece;
 
 

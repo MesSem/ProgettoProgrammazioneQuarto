@@ -2,7 +2,7 @@ package interfaces;
 
 import java.io.IOException;
 
-import classes.BoardConfigurationException;
+import Exception.BoardConfigurationException;
 import classes.Piece;
 
 public interface I_board {

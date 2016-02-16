@@ -1,4 +1,4 @@
-package classes;
+package Exception;
 
 public class PieceConfigurationException extends Exception {
 	public PieceConfigurationException() {

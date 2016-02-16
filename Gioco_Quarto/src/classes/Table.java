@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
+import Exception.BoardConfigurationException;
+import Exception.NotUsedPieceConfigurationException;
+import Exception.PieceConfigurationException;
 import interfaces.I_piece;
 import interfaces.I_table;
 

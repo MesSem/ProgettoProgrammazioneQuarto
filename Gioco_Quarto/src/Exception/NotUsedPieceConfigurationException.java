@@ -1,4 +1,4 @@
-package classes;
+package Exception;
 
 public class NotUsedPieceConfigurationException extends Exception {
 	public NotUsedPieceConfigurationException() {

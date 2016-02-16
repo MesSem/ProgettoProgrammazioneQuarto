@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOError;
 import java.io.IOException;
 
+import Exception.BoardConfigurationException;
+import Exception.PieceConfigurationException;
 import interfaces.I_board;
 
 public class Board implements I_board {

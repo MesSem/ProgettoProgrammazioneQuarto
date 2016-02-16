@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import javax.sql.rowset.serial.SerialArray;
 
+import Exception.BoardConfigurationException;
+import Exception.NotUsedPieceConfigurationException;
+
 public class Player {
 
 	static Table t;

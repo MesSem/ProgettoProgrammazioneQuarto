@@ -1,4 +1,4 @@
-package classes;
+package Exception;
 
 public class BoardConfigurationException extends Exception {
 	public BoardConfigurationException() {
