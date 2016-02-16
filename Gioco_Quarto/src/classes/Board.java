@@ -187,7 +187,7 @@ public class Board implements I_board {
 	}
 
 	/**
-	 * It get the size of the board
+	 * It get the size of the board, the numbers of box of the board: row*column
 	 * 
 	 * @return the size of the board
 	 */
