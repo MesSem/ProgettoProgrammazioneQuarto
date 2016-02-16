@@ -3,7 +3,14 @@ package classes;
 import Exception.PieceConfigurationException;
 import interfaces.I_piece;
 
+/**
+ * This class stand for a single piece of the game
+ * 
+ * @author Morettini and Candelaresi
+ *
+ */
 public class Piece implements I_piece {
+	// These are the four characteristic about one piece
 	private char size;
 	private char colour;
 	private char shape;
@@ -24,11 +31,15 @@ public class Piece implements I_piece {
 	}
 
 	/**
-	 * It try to create a new piece after some checks
-	 * NOTA PER ENRICO: COSA NE PENSI DELLA COSA DEL'ASTERISCO? MEGLIO METTERE UN CONTROLLO IN TABLE O LASCIARE COSÌ?
+	 * It try to create a new piece after some checks. It's static because it
+	 * give the opportunity to create a new piece whit correct data without
+	 * create before a Piece object
+	 * 
+	 * NOTA PER ENRICO: COSA NE PENSI DELLA COSA DEL'ASTERISCO? MEGLIO METTERE
+	 * UN CONTROLLO IN TABLE O LASCIARE COSÌ?
 	 * 
 	 * @param pieceDescription
-	 *            the string for create the object from
+	 *            the string with data for create the new object
 	 * @param asteriskAccepted
 	 *            if the asterisk ("*") could be accepted(true) or not(false)
 	 * @return the piece created
@@ -49,78 +60,69 @@ public class Piece implements I_piece {
 						return null;
 					else
 						throw new PieceConfigurationException(
-								"An error has occurred. The string <*> can not be accepted");
+								"An error has occurred. The string ''*'' can not be accepted");
 				case 'A':
 				case 'B':
+					// the if check if the index is zero, A or B could stay only
+					// in the first position
 					if (i == 0) {
 						// i'm building a string which contains the letters, if
 						// they're right.
 						tmpPiece = tmpPiece + c;
 					} else {
-						// throws exception: the analyzedPiece has some wrong
-						// parameter
+						// the analyzedPiece has some wrong parameter
 						throw new PieceConfigurationException(
 								"An error has occurred. First character should always be A or B.");
 					}
 					break;
-
+				// in the other case the code do the same things for the other
+				// letters
 				case 'W':
 				case 'N':
 					if (i == 1) {
-						// i'm building a string which contains the letters, if
-						// they're right.
 						tmpPiece = tmpPiece + c;
 					} else {
-						// throws exception: the analyzedPiece has some wrong
-						// parameter
 						throw new PieceConfigurationException(
 								"An error has occurred. Second character should always be W or N.");
 					}
 					break;
-
 				case 'T':
 				case 'Q':
 					if (i == 2) {
-						// i'm building a string which contains the letters, if
-						// they're right.
 						tmpPiece = tmpPiece + c;
 					} else {
-						// throws exception: the analyzedPiece has some wrong
-						// parameter
 						throw new PieceConfigurationException(
 								"An error has occurred. Third character should always be T or Q.");
 					}
 					break;
-
 				case 'P':
 				case 'F':
 					if (i == 3) {
-						// i'm building a string which contains the letters, if
-						// they're right.
 						tmpPiece = tmpPiece + c;
 					} else {
-						// throws exception: the analyzedPiece has some wrong
-						// parameter
 						throw new PieceConfigurationException(
 								"An error has occurred. Fourth character should always be P or F.");
 					}
 					break;
 				default:
 					throw new PieceConfigurationException(
-							"An error has occurred. Second character should always be W or N.");
+							"An error has occurred. Character '" + c + "' can not be accepted");
 				}
 				i++;
 			}
-			if (i == 4) {
-				// If the program arrives here it means that the piece is okay.
-				Piece p = new Piece(tmpPiece.toCharArray());
-				return p;
-			}
 		} else {
 			throw new PieceConfigurationException(
-					"An error has occurred. file is compromised. --->There's a string longer or shorter than 4 chars.");
+					"An error has occurred. File is compromised. --->There's a string longer or shorter than 4 chars.");
 		}
-		return null;
+		if (analyzedPiece.length == 4) {
+			// If the program arrives here it means that the description of the
+			// piece is okay, so the method create the piece.
+			Piece p = new Piece(tmpPiece.toCharArray());
+			return p;
+		} else {
+			// Null will be used in the board to identify empty box of the board
+			return null;
+		}
 	}
 
 	/**
