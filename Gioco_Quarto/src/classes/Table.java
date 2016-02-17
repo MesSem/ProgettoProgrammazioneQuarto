@@ -110,8 +110,8 @@ public class Table implements I_table {
 				if(board.isFree(i))
 					cont++;
 			}
-			if(cont!=pieceNotUsed.size()){
-				throw new NotUsedPieceConfigurationException("Non so come scriverlo, l'erroer è o ci sono troppi o troppi pochi pezzi ");
+			if(cont!=pieceNotUsed.size()+1){
+				throw new NotUsedPieceConfigurationException("Pieces that haven't been placed exceed or are fewer than free positions on the board");
 			}
 		} catch (IOException e) {
 			throw e;
