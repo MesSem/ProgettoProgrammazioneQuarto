@@ -105,6 +105,14 @@ public class Table implements I_table {
 					throw new NotUsedPieceConfigurationException("This piece " + line + " is already used ");
 			}
 			in.close();
+			int cont=0;
+			for(int i=0;i<board.size();i++){
+				if(board.isFree(i))
+					cont++;
+			}
+			if(cont!=pieceNotUsed.size()){
+				throw new NotUsedPieceConfigurationException("Non so come scriverlo, l'erroer è o ci sono troppi o troppi pochi pezzi ");
+			}
 		} catch (IOException e) {
 			throw e;
 		} catch (NotUsedPieceConfigurationException er) {

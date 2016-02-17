@@ -52,6 +52,13 @@ public class Board implements I_board {
 				// read more than 4 lines i put the value of that line in app
 				while (((app = boardReader.readLine()) != null) && cont < 5) {
 					String[] row = app.split(" ");
+					if(cont>=4){
+						cont++;
+						break;
+					}
+					if(row.length !=4){
+						throw new BoardConfigurationException("The line "+ (cont+1)+" of the board file contains less or more than 4 box");
+					}
 					// scans each row's cells and checks its actual value, if
 					// it's okay it becomes a piece on the board.
 					for (int c = 0; c < 4; c++) {
@@ -75,6 +82,9 @@ public class Board implements I_board {
 						}
 					}
 					cont++;
+				}
+				if(cont!=4){
+					throw new BoardConfigurationException("The file of the board contains less or more than 4 rows");
 				}
 				boardReader.close();
 			} else {
