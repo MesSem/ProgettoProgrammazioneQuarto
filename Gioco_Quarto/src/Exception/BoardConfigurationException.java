@@ -1,7 +1,7 @@
 package Exception;
 
 /**
- * This exception is for error inside the file with board's data
+ * This exception will be thrown if an error occurs into the Board's file
  * 
  * @author Morettini and Candelaresi
  *

@@ -1,7 +1,8 @@
 package Exception;
 
 /**
- * This exception is for error inside the data for the creation of a single piece
+ * This exception will be thrown if Piece Not Used file's data 
+ * are damaged, corrupted, incomplete or wrong
  * 
  * @author Morettini and Candelaresi
  *

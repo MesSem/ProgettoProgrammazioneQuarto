@@ -186,7 +186,7 @@ public class Table implements I_table {
 	}
 
 	/**
-	 * Gets the piece not used of the Table.
+	 * This method is used to get notUsedPieces.
 	 * 
 	 * @return the pieceNotUsed as ArrayList of Piece
 	 */
@@ -196,12 +196,12 @@ public class Table implements I_table {
 	}
 
 	/**
-	 * Save the board of this table. It use the method inside the Board object
+	 * Saves the current board. It uses a Board object's method.
 	 * 
 	 * @param path
-	 *            the path where you want to save the board
+	 *            the path where you want the board to be saved
 	 * @exception IOException
-	 *                If an input or output exception occurred inside
+	 *                If an input or output exception occurs inside
 	 *                Board.saveBoard(String path);
 	 */
 	@Override
@@ -210,11 +210,10 @@ public class Table implements I_table {
 	}
 
 	/**
-	 * Remove a piece in the list of pieces not used in the specified position.
+	 * Removes a piece in the list of not used pieces at the specified position.
 	 * 
 	 * @param position
-	 *            index of the position where the method have to remove the
-	 *            piece
+	 *            index of the position where the piece to be removed is.
 	 */
 	@Override
 	public void removePieceNotUsedAtPosition(int position) {
@@ -222,13 +221,13 @@ public class Table implements I_table {
 	}
 
 	/**
-	 * Insert a piece in the board in the specified position. The position is an
-	 * index about a vector, Board will calculate the respective matrix index
+	 * Places a piece in the board at the specified position. Position is a
+	 * vector's index, Board will calculate the respective matrix index
 	 * 
 	 * @param p
-	 *            piece to position
+	 *            piece to be placed
 	 * @param position
-	 *            index of the position where the method have to put the piece
+	 *            Position where the piece has to be placed.
 	 */
 	@Override
 	public void insertPieceInBoardAtPosition(Piece p, int position) {
@@ -237,9 +236,9 @@ public class Table implements I_table {
 	}
 
 	/**
-	 * Get the game of the situation in the current instant
+	 * Gets current game's situation
 	 * 
-	 * @return the game's situation of the board
+	 * @return  game's situation
 	 */
 	@Override
 	public int getGameSituation() {
@@ -247,7 +246,7 @@ public class Table implements I_table {
 	}
 
 	/**
-	 * Check if a piece is already in pieceNotUsed or is in pieceToPosition
+	 * Checks if a piece is already contained in notUsedPieces or if it is the pieceToBePlaced
 	 * 
 	 * @param piece
 	 *            that you want to check

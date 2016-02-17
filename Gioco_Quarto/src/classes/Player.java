@@ -137,7 +137,7 @@ public class Player {
 	 * indexBestPosition will be contained the position that the algorithm has
 	 * decided to be the best to put the piece in. Into indexBestPieceForEnemy
 	 * there's going to be the index of the piece for enemy. Each index refers
-	 * respectively to the board object and to the list of pieceNotUsed. The
+	 * respectively to the board object and to the list of notUsedPieces. The
 	 * program aims for maximum points, the adversary aims for the minimum
 	 * points. Alpha contains the maximum points that program could achieve
 	 * while beta contains the minimum points that the adversary could achieve

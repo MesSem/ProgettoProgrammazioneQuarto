@@ -1,7 +1,7 @@
 package Exception;
 
 /**
- * This exception is for error inside the file about piece not used
+ * This exception will be thrown if an error occurs into the Not Used Pieces' file
  * 
  * @author Morettini and Candelaresi
  *
