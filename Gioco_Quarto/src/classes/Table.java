@@ -87,7 +87,7 @@ public class Table implements I_table {
 				if (!(board.isPlaced(tmp)))
 					pieceToPosition = tmp;
 				else
-					throw new NotUsedPieceConfigurationException("This piece " + line + " is already in the board ");
+					throw new NotUsedPieceConfigurationException("This piece " + firstPiece + " is already in the board ");
 			} else
 				throw new NotUsedPieceConfigurationException("No pieces on file " + path);
 			// Now I store all the other Piece in the list pieceNotUsed
