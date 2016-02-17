@@ -143,8 +143,6 @@ public class Table implements I_table {
 		try {
 			FileWriter fw = new FileWriter(path);
 			out = new BufferedWriter(fw);
-			out.write(pieceToPosition.toString());
-			String s = pieceToPosition.toString();
 			for (Piece piece : pieceNotUsed) {
 				out.newLine();
 				out.write(piece.toString());
