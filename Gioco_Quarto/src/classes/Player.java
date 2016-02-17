@@ -1,15 +1,18 @@
 package classes;
 
-import java.awt.List;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.sql.rowset.serial.SerialArray;
-
 import Exception.BoardConfigurationException;
 import Exception.NotUsedPieceConfigurationException;
-import Exception.PieceConfigurationException;
 
+/**
+ * This class represent the player. It contains the main method and the
+ * intelligent of the program
+ * 
+ * @author Morettini
+ *
+ */
 public class Player {
 
 	static Table t;

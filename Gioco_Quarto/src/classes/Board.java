@@ -1,14 +1,11 @@
 package classes;
 
-import java.awt.image.ImagingOpException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOError;
 import java.io.IOException;
-import java.util.stream.Stream;
 
 import Exception.BoardConfigurationException;
 import Exception.PieceConfigurationException;
@@ -35,12 +32,13 @@ public class Board implements I_board {
 	@Override
 	public void loadBoard(String path) throws BoardConfigurationException, IOException {
 		BufferedReader boardReader = null;
+		FileReader br=null;
 		try {
 			// Creates file-reader variables.
 			File boardfile = new File(path);
 			if (boardfile.exists()) {
 				// opens file, reading mode
-				FileReader br = new FileReader(boardfile);
+				br = new FileReader(boardfile);
 				boardReader = new BufferedReader(br);
 				String app;
 				int cont = 0;
@@ -95,6 +93,7 @@ public class Board implements I_board {
 			// If there was some exception the code try to close the Buffer before to go forward
 			try {
 				boardReader.close();
+				br.close();
 			} catch (Exception err) {
 
 			}
