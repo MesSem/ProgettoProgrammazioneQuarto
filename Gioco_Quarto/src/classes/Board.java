@@ -127,7 +127,7 @@ public class Board implements I_board {
 				for (int j = 0; j < 4; j++) {
 					// If it's null it's a void space.
 					if (board[i][j] == null)
-						out.write("**** ");
+						out.write("* ");
 					else
 						out.write(board[i][j].toString() + " ");
 				}
