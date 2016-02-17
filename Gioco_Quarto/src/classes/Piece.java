@@ -7,7 +7,6 @@ import interfaces.I_piece;
  * This class stands for a single piece
  * 
  * @author Candelaresi
- *
  */
 public class Piece implements I_piece {
 	// These are the four characteristic about one piece
@@ -19,9 +18,8 @@ public class Piece implements I_piece {
 	/**
 	 * Constructor
 	 * 
-	 * @param c
-	 *            char array with the following characteristics, in this precise order:
-	 *            size-color-shape-volume
+	 * @param c char array with the following characteristics, in this precise
+	 *            order: size-color-shape-volume
 	 */
 	public Piece(char[] c) {
 		size = c[0];
@@ -31,22 +29,17 @@ public class Piece implements I_piece {
 	}
 
 	/**
-	 * Tries to create a new piece after some checks have been made. 
-	 *We've made it 'static' because it allows us to check
-	 *some parameters before we call the constructor method
-	 *which is called inside this method.
-	*
-	 * NOTA PER ENRICO: COSA NE PENSI DELLA COSA DEL'ASTERISCO? MEGLIO METTERE
-	 * UN CONTROLLO IN TABLE O LASCIARE COSÌ?
+	 * Tries to create a new piece after some checks have been made. We've made
+	 * it 'static' because it allows us to check some parameters before we call
+	 * the constructor method which is called inside this method.
 	 * 
 	 * @param pieceDescription
-	 *          contains data to create a new object
+	 *            contains data to create a new object
 	 * @param asteriskAccepted
 	 *            if the asterisk ("*") can be accepted(true) or not(false)
 	 * @return the piece created
-	 * @throws PieceConfigurationException
-	 *             if  any error occurs in the String received to create the
-	 *             piece
+	 * @throws PieceConfigurationException if any error occurs in the 
+	 * 			String received to create the piece
 	 */
 	static Piece checkAndCreate(String pieceDescription, boolean asteriskAccepted) throws PieceConfigurationException {
 		char[] analyzedPiece = pieceDescription.toCharArray();
@@ -64,11 +57,9 @@ public class Piece implements I_piece {
 								"An error has occurred. The string ''*'' can not be accepted");
 				case 'A':
 				case 'B':
-					// the if check if the index is zero, A or B could stay only
-					// in the first position
+					// the if check if the index is zero, A or B could stay only in the first position
 					if (i == 0) {
-						// i'm building a string which contains the letters, if
-						// they're right.
+						// i'm building a string which contains the letters, if they're right.
 						tmpPiece = tmpPiece + c;
 					} else {
 						// the analyzedPiece has some wrong parameter
@@ -76,8 +67,7 @@ public class Piece implements I_piece {
 								"An error has occurred. Only the first character can be A or B.");
 					}
 					break;
-				// in the other case the code do the same things for the other
-				// letters
+				// in the other case the code do the same things for the other letters
 				case 'W':
 				case 'N':
 					if (i == 1) {
@@ -129,8 +119,7 @@ public class Piece implements I_piece {
 	/**
 	 * Checks if an input-given piece is equal to the current piece.
 	 * 
-	 * @param p
-	 *            The piece you want to compare the current piece with
+	 * @param p The piece you want to compare the current piece with
 	 * @return true if they are equal, false otherwise
 	 */
 	@Override
@@ -144,7 +133,6 @@ public class Piece implements I_piece {
 
 	/**
 	 * Gets the object characteristics as String
-	 * 
 	 * @return The object characteristic in String format
 	 */
 	@Override
@@ -155,14 +143,10 @@ public class Piece implements I_piece {
 	/**
 	 * Checks if 4 input-given pieces have something in common
 	 * 
-	 * @param p0
-	 *            Piece #one
-	 * @param p1
-	 *            Piece #two
-	 * @param p2
-	 *            Piece #three
-	 * @param p3
-	 *            Piece #four
+	 * @param p0 Piece #one
+	 * @param p1 Piece #two
+	 * @param p2 Piece #three
+	 * @param p3 Piece #four
 	 * @return true if there are something in common, false otherwise
 	 */
 	static boolean victory(Piece p0, Piece p1, Piece p2, Piece p3) {

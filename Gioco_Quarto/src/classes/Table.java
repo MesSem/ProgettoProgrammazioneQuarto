@@ -32,16 +32,11 @@ public class Table implements I_table {
 	/**
 	 * Constructor of the Table class
 	 * 
-	 * @param pathBoardFile
-	 *            file's path which contains board's configuration
-	 * @param pathNotUsedPiecesFile
-	 *            file's path which contains the list of not used pieces
-	 * @throws NotUsedPieceConfigurationException
-	 *             If there are any mistakes inside the Not Used Pieces' file
-	 * @throws BoardConfigurationException
-	 *           If there are any mistakes inside the Board's file
-	 * @throws IOException
-	 *             If an input or output exception occurs inside loadBoard or
+	 * @param pathBoardFile file's path which contains board's configuration
+	 * @param pathNotUsedPiecesFile file's path which contains the list of not used pieces
+	 * @throws NotUsedPieceConfigurationException If there are any mistakes inside the Not Used Pieces' file
+	 * @throws BoardConfigurationException If there are any mistakes inside the Board's file
+	 * @throws IOException If an input or output exception occurs inside loadBoard or
 	 *             loadNotUsedPiece
 	 */
 	public Table(String pathBoardFile, String pathNotUsedPiecesFile)
@@ -58,12 +53,9 @@ public class Table implements I_table {
 	/**
 	 * Load the Piece not used yet in the Table
 	 * 
-	 * @param path
-	 *            File's path where data about the not used pieces are contained.
-	 * @throws PieceConfigurationException
-	 *             if there is any error inside the file
-	 * @throws IOException
-	 *             if there are any I/O exceptions
+	 * @param path File's path where data about the not used pieces are contained.
+	 * @throws PieceConfigurationException if there is any error inside the file
+	 * @throws IOException if there are any I/O exceptions
 	 */
 	public void loadNotUsedPieces(String path) throws NotUsedPieceConfigurationException, IOException {
 		String line = "";
@@ -128,9 +120,7 @@ public class Table implements I_table {
 
 	/**
 	 * Set the piece to position for the enemy
-	 * 
-	 * @param piece
-	 *           Piece to be placed by the adversary
+	 * @param piece Piece to be placed by the adversary
 	 */
 	@Override
 	public void setEnemyPiece(Piece piece) {
@@ -139,12 +129,8 @@ public class Table implements I_table {
 
 	/**
 	 * Saves the pieces in the file specified by the path
-	 * 
-	 * @param path
-	 *            file's path where you want the pieces to be saved
-	 * 
-	 * @throws IOException
-	 *             If an I/O error occurs
+	 * @param path file's path where you want the pieces to be saved
+	 * @throws IOException If an I/O error occurs
 	 */
 	@Override
 	public void savePieces(String path) throws IOException {
@@ -177,43 +163,35 @@ public class Table implements I_table {
 
 	/**
 	 * Get the board of the Table.
-	 * 
 	 * @return the board as a Board object
 	 */
 	@Override
 	public Board getBoard() {
 		return board;
 	}
-
 	/**
 	 * This method is used to get notUsedPieces.
-	 * 
 	 * @return the pieceNotUsed as ArrayList of Piece
 	 */
 	@Override
 	public ArrayList<Piece> getPieceNotUsed() {
 		return notUsedPieces;
 	}
-
 	/**
 	 * Saves the current board. It uses a Board object's method.
 	 * 
-	 * @param path
-	 *            the path where you want the board to be saved
-	 * @exception IOException
-	 *                If an input or output exception occurs inside
+	 * @param path the path where you want the board to be saved
+	 * @exception IOException If an input or output exception occurs inside
 	 *                Board.saveBoard(String path);
 	 */
 	@Override
 	public void saveBoard(String path) throws IOException {
 		board.saveBoard(path);
 	}
-
 	/**
 	 * Removes a piece in the list of not used pieces at the specified position.
 	 * 
-	 * @param position
-	 *            index of the position where the piece to be removed is.
+	 * @param position index of the position where the piece to be removed is.
 	 */
 	@Override
 	public void removePieceNotUsedAtPosition(int position) {
@@ -223,21 +201,16 @@ public class Table implements I_table {
 	/**
 	 * Places a piece in the board at the specified position. Position is a
 	 * vector's index, Board will calculate the respective matrix index
-	 * 
-	 * @param p
-	 *            piece to be placed
-	 * @param position
-	 *            Position where the piece has to be placed.
+	 * @param p piece to be placed
+	 * @param position Position where the piece has to be placed.
 	 */
 	@Override
 	public void insertPieceInBoardAtPosition(Piece p, int position) {
 		board.putPieceAtPosition(p, position);
-
 	}
 
 	/**
 	 * Gets current game's situation
-	 * 
 	 * @return  game's situation
 	 */
 	@Override
@@ -247,9 +220,7 @@ public class Table implements I_table {
 
 	/**
 	 * Checks if a piece is already contained in notUsedPieces or if it is the pieceToBePlaced
-	 * 
-	 * @param piece
-	 *            that you want to check
+	 * @param piece that you want to check
 	 * @return true if the piece is already placed, false otherwise
 	 */
 	private boolean isPlaced(Piece p) {
@@ -263,5 +234,4 @@ public class Table implements I_table {
 		}
 		return false;
 	}
-
 }

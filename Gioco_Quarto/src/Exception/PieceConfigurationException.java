@@ -1,8 +1,8 @@
 package Exception;
 
 /**
- * This exception will be thrown if Piece Not Used file's data 
- * are damaged, corrupted, incomplete or wrong
+ * This exception will be thrown if Piece Not Used file's data are damaged,
+ * corrupted, incomplete or wrong
  * 
  * @author Morettini and Candelaresi
  *

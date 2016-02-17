@@ -80,7 +80,7 @@ public class Player {
 				if (notUsedPieces.size() > 0) {
 					t.setEnemyPiece(notUsedPieces.get(indexBestPieceForEnemy));
 					t.removePieceNotUsedAtPosition(indexBestPieceForEnemy);
-				}else{
+				} else {
 					t.setEnemyPiece(null);
 				}
 
@@ -162,8 +162,8 @@ public class Player {
 	static int nextMove(Board board, ArrayList<Piece> freePieces, Piece toPosition, Boolean turn, int depth, int alpha,
 			int beta) {
 		// Checks if we're going out of the tree.
-		if (depth > maxDepth)
-		{	if (turn)
+		if (depth > maxDepth) {
+			if (turn)
 				return +100;
 			else
 				return -100;
@@ -178,19 +178,14 @@ public class Player {
 			// algorithm tries to place
 			// the piece in each position. Then it calls itself with the new
 			// configuration.
-			for (int i = 0; i < board.size(); i++) 
-			{
-				if (board.isFree(i)) 
-				{
+			for (int i = 0; i < board.size(); i++) {
+				if (board.isFree(i)) {
 					board.putPieceAtPosition(toPosition, i);
 					result = board.gameSituation();
 					// Checks whether the game has ended or no.
-					if (result == 1000) 
-					{
-						if (turn) 
-						{
-							// #TODO:per simone, controllare i successivi
-							// commenti
+					if (result == 1000) {
+						if (turn) {
+							// It's call himself but passing null as toPosition
 							int res = nextMove(board, freePieces, null, turn, depth, alpha, beta);
 							// If the algorithm is at the top level, it's
 							// program's turn
@@ -198,8 +193,7 @@ public class Player {
 							// better than the result of the other branch. So it
 							// saves
 							// the index of the position
-							if (res > alpha && depth == 0) 
-							{
+							if (res > alpha && depth == 0) {
 								indexBestPosition = i;
 								// if this branch gives 'win' and it's at the
 								// top level, the algorithm can stop now.
@@ -207,8 +201,7 @@ public class Player {
 								// added piece
 								// to transform the board as it was at the
 								// beginning
-								if (res == 1) 
-								{
+								if (res == 1) {
 									board.removePieceAtPosition(i);
 									return res;
 								}
@@ -220,8 +213,7 @@ public class Player {
 							// in the other branch of this level and the score
 							// that will be achieved on the level below
 							alpha = Math.max(alpha, res);
-							if (beta <= alpha) 
-							{
+							if (beta <= alpha) {
 								board.removePieceAtPosition(i);
 								// This node will return alpha, but since in the
 								// higher level there is a branch with a lower
@@ -276,9 +268,9 @@ public class Player {
 		} else {
 			// The program arrives here when "toPosition" is null
 			// so it is time to choose the enemy's piece
-			//  This 'for' statement scans each not used piece
+			// This 'for' statement scans each not used piece
 			// and chooses
-			//the best piece to give to the other player.
+			// the best piece to give to the other player.
 			for (int k = 0; k < freePieces.size(); k++) {
 				Piece pieceForEnemy = freePieces.get(k);
 				freePieces.remove(k);
