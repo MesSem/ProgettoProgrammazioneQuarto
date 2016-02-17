@@ -42,7 +42,7 @@ public class Player {
 				// Takes from the table a list of Pieces which aren't already
 				// used
 				// which are then studied by the algorithm
-				ArrayList<Piece> pieceNotUsed = t.getPieceNotUsed();
+				ArrayList<Piece> notUsedPieces = t.getPieceNotUsed();
 
 				// Takes the piece that the player has to place
 				Piece toPosition = t.getPieceToPosition();
@@ -52,7 +52,7 @@ public class Player {
 				// analyze all the possible combinations.
 				// it would take too much time. So with this switch I set the
 				// maximum number of attempts;
-				switch (pieceNotUsed.size()) {
+				switch (notUsedPieces.size()) {
 				case 15:
 				case 14:
 					maxDepth = 2;
@@ -71,14 +71,14 @@ public class Player {
 				// Invocation Player's brain. The value in result
 				// shows the maximum result that the current player could
 				// achieve at the end of the game at the current situation
-				result = nextMove(board, pieceNotUsed, toPosition, true, 0, -999, +999);
+				result = nextMove(board, notUsedPieces, toPosition, true, 0, -999, +999);
 
 				// Now all the changes are applied at the structure in the table
 				// and all data are going to be saved
 				t.insertPieceInBoardAtPosition(toPosition, indexBestPosition);
 
-				if (pieceNotUsed.size() > 0) {
-					t.setEnemyPiece(pieceNotUsed.get(indexBestPieceForEnemy));
+				if (notUsedPieces.size() > 0) {
+					t.setEnemyPiece(notUsedPieces.get(indexBestPieceForEnemy));
 					t.removePieceNotUsedAtPosition(indexBestPieceForEnemy);
 				}else{
 					t.setEnemyPiece(null);
@@ -144,7 +144,7 @@ public class Player {
 	 * 
 	 * @param board
 	 *            Current board where the game is played.
-	 * @param freePiece
+	 * @param freePieces
 	 *            list of not used pieces
 	 * @param toPosition
 	 *            piece to place
@@ -159,15 +159,16 @@ public class Player {
 	 *            lower result for the enemy in the father branch
 	 * @return the best result possible for the Player
 	 */
-	static int nextMove(Board board, ArrayList<Piece> freePiece, Piece toPosition, Boolean turn, int depth, int alpha,
+	static int nextMove(Board board, ArrayList<Piece> freePieces, Piece toPosition, Boolean turn, int depth, int alpha,
 			int beta) {
 		// Checks if we're going out of the tree.
 		if (depth > maxDepth)
-			if (turn)
+		{	if (turn)
 				return +100;
 			else
 				return -100;
-		// 100 is the default value, it means that the game hasn't ended
+		}
+		// 1000 is the default value, it means that the game hasn't ended
 		int result = 1000;
 		// Checks whether the current iteration is the one where the algorithm
 		// has to
@@ -175,33 +176,39 @@ public class Player {
 		if (toPosition != null) {
 			// The following for cycle scans all the empty positions and the
 			// algorithm tries to place
-			// the piece in each position. Than it calls himself with the new
+			// the piece in each position. Then it calls itself with the new
 			// configuration.
-			for (int i = 0; i < board.size(); i++) {
-				if (board.isFree(i)) {
+			for (int i = 0; i < board.size(); i++) 
+			{
+				if (board.isFree(i)) 
+				{
 					board.putPieceAtPosition(toPosition, i);
 					result = board.gameSituation();
 					// Checks whether the game has ended or no.
-					if (result == 1000) {
-						if (turn) {
+					if (result == 1000) 
+					{
+						if (turn) 
+						{
 							// #TODO:per simone, controllare i successivi
 							// commenti
-							int res = nextMove(board, freePiece, null, turn, depth, alpha, beta);
+							int res = nextMove(board, freePieces, null, turn, depth, alpha, beta);
 							// If the algorithm is at the top level, it's
 							// program's turn
 							// and the result of this branch is
 							// better than the result of the other branch. So it
 							// saves
 							// the index of the position
-							if (res > alpha && depth == 0) {
+							if (res > alpha && depth == 0) 
+							{
 								indexBestPosition = i;
-								// Since this branch gives 'win' and it's at the
+								// if this branch gives 'win' and it's at the
 								// top level, the algorithm can stop now.
 								// Before the return statement it removes the
 								// added piece
 								// to transform the board as it was at the
 								// beginning
-								if (res == 1) {
+								if (res == 1) 
+								{
 									board.removePieceAtPosition(i);
 									return res;
 								}
@@ -213,7 +220,8 @@ public class Player {
 							// in the other branch of this level and the score
 							// that will be achieved on the level below
 							alpha = Math.max(alpha, res);
-							if (beta <= alpha) {
+							if (beta <= alpha) 
+							{
 								board.removePieceAtPosition(i);
 								// This node will return alpha, but since in the
 								// higher level there is a branch with a lower
@@ -229,7 +237,7 @@ public class Player {
 							// beta the minimum score between the score achieved
 							// in the other branch of this level and the score
 							// that it will be achieved in the level below.
-							beta = Math.min(beta, nextMove(board, freePiece, null, turn, depth, alpha, beta));
+							beta = Math.min(beta, nextMove(board, freePieces, null, turn, depth, alpha, beta));
 							if (alpha >= beta) {
 								// This node will return beta, but since in the
 								// higher level there is a branch with a higher
@@ -266,16 +274,15 @@ public class Player {
 				}
 			}
 		} else {
-			// The program goes here when it is time to choose the piece for
-			// the other player. This for statement locates all not used piece
+			// The program arrives here when "toPosition" is null
+			// so it is time to choose the enemy's piece
+			//  This 'for' statement scans each not used piece
 			// and chooses
-			// ?????????????????????????????????????????????????????????
-			// each piece for the other.
-			// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-			for (int k = 0; k < freePiece.size(); k++) {
-				Piece pieceForEnemy = freePiece.get(k);
-				freePiece.remove(k);
-				result = nextMove(board, freePiece, pieceForEnemy, !turn, depth + 1, alpha, beta);
+			//the best piece to give to the other player.
+			for (int k = 0; k < freePieces.size(); k++) {
+				Piece pieceForEnemy = freePieces.get(k);
+				freePieces.remove(k);
+				result = nextMove(board, freePieces, pieceForEnemy, !turn, depth + 1, alpha, beta);
 
 				if (turn) {
 					// If it's the top level and there is a good result, the
@@ -283,23 +290,23 @@ public class Player {
 					if (alpha < result && depth == 0) {
 						indexBestPieceForEnemy = k;
 						if (result == 1) {
-							freePiece.add(k, pieceForEnemy);
+							freePieces.add(k, pieceForEnemy);
 							return result;
 						}
 					}
 					alpha = Math.max(alpha, result);
 					if (beta <= alpha) {
-						freePiece.add(k, pieceForEnemy);
+						freePieces.add(k, pieceForEnemy);
 						break;
 					}
 				} else {
 					beta = Math.min(beta, result);
 					if (alpha >= beta) {
-						freePiece.add(k, pieceForEnemy);
+						freePieces.add(k, pieceForEnemy);
 						break;
 					}
 				}
-				freePiece.add(k, pieceForEnemy);
+				freePieces.add(k, pieceForEnemy);
 			}
 		}
 		// If at this level it's the player's turn, the node takes the value

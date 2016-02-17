@@ -16,16 +16,16 @@ import interfaces.I_piece;
 import interfaces.I_table;
 
 /**
- * The table stand for the physical table/desk where there are the board and the
- * piece not already placed in the board. It contains some methods to work
- * indirectly with the board and with the piece not already used
+ * Table stands for the physical table/desk where the board and the
+ * pieces are. It contains some methods to interact
+ * with the board and with not already used pieces
  * 
  * @author Morettini
  *
  */
 public class Table implements I_table {
-	ArrayList<Piece> pieceNotUsed;
-	Piece pieceToPosition;
+	ArrayList<Piece> notUsedPieces;
+	Piece pieceToBePlaced;
 
 	Board board;
 
@@ -33,25 +33,25 @@ public class Table implements I_table {
 	 * Constructor of the Table class
 	 * 
 	 * @param pathBoardFile
-	 *            path of the file that contain the configuration of the Board
+	 *            file's path which contains board's configuration
 	 * @param pathNotUsedPiecesFile
-	 *            path of the file that contain the list of the piece not used
+	 *            file's path which contains the list of not used pieces
 	 * @throws NotUsedPieceConfigurationException
-	 *             If there are some mistakes inside the Piece not used file
+	 *             If there are any mistakes inside the Not Used Pieces' file
 	 * @throws BoardConfigurationException
-	 *             If there are some mistakes inside the Board file
+	 *           If there are any mistakes inside the Board's file
 	 * @throws IOException
-	 *             If an input or output exception occurred inside loadBoard or
+	 *             If an input or output exception occurs inside loadBoard or
 	 *             loadNotUsedPiece
 	 */
 	public Table(String pathBoardFile, String pathNotUsedPiecesFile)
 			throws NotUsedPieceConfigurationException, BoardConfigurationException, IOException {
-		// Preparation of the board
+		//Board preparation
 		board = new Board();
 		board.loadBoard(pathBoardFile);
 
-		// Preparation of free piece
-		pieceNotUsed = new ArrayList<>();
+		// Not Used pieces preparation
+		notUsedPieces = new ArrayList<>();
 		loadNotUsedPieces(pathNotUsedPiecesFile);
 	}
 
@@ -59,11 +59,11 @@ public class Table implements I_table {
 	 * Load the Piece not used yet in the Table
 	 * 
 	 * @param path
-	 *            of the file where is the data about the piece not used yet
+	 *            File's path where data about the not used pieces are contained.
 	 * @throws PieceConfigurationException
-	 *             if there is some error inside the file
+	 *             if there is any error inside the file
 	 * @throws IOException
-	 *             if there are some I/O exceptions
+	 *             if there are any I/O exceptions
 	 */
 	public void loadNotUsedPieces(String path) throws NotUsedPieceConfigurationException, IOException {
 		String line = "";
@@ -74,33 +74,34 @@ public class Table implements I_table {
 			fr = new FileReader(path);
 			in = new BufferedReader(fr);
 			// The first line of the file contains the data of the piece that
-			// the player have to position, so I put in a special variable
+			// the player have to position, so I set its value in a special variable
 			String firstPiece = in.readLine();
 			if (firstPiece != null) {
 				try {
-					// AT checkAndCreate I pass the String data and false
-					// because I want a not null piece
+					// The string which contains piece's data and the boolean value 'false'
+					// are passed to the Piece's checkAndCreate function
+					// because the piece can't be a null one.
 					tmp = Piece.checkAndCreate(firstPiece, false);
 				} catch (PieceConfigurationException er) {
 					throw new NotUsedPieceConfigurationException(er.getMessage());
 				}
 				if (!(board.isPlaced(tmp)))
-					pieceToPosition = tmp;
+					pieceToBePlaced = tmp;
 				else
 					throw new NotUsedPieceConfigurationException("This piece " + firstPiece + " is already in the board ");
 			} else
 				throw new NotUsedPieceConfigurationException("No pieces on file " + path);
-			// Now I store all the other Piece in the list pieceNotUsed
+			// All other pieces are now stored into notUsedPieces
 			while ((line = in.readLine()) != null) {
 				try {
 					tmp = Piece.checkAndCreate(line, false);
 				} catch (PieceConfigurationException er) {
 					throw new NotUsedPieceConfigurationException(er.getMessage());
 				}
-				// The if check if the piece is already in the board or in other
-				// structure in the Table
+				// This 'if ' statement checks if the current piece has already been placed on the board or in any other
+				// structure on the Table
 				if (!board.isPlaced(tmp) && !isPlaced(tmp))
-					pieceNotUsed.add(tmp);
+					notUsedPieces.add(tmp);
 				else
 					throw new NotUsedPieceConfigurationException("This piece " + line + " is already used ");
 			}
@@ -110,7 +111,7 @@ public class Table implements I_table {
 				if(board.isFree(i))
 					cont++;
 			}
-			if(cont!=pieceNotUsed.size()+1){
+			if(cont!=notUsedPieces.size()+1){
 				throw new NotUsedPieceConfigurationException("Pieces that haven't been placed exceed or are fewer than free positions on the board");
 			}
 		} catch (IOException e) {
@@ -129,18 +130,18 @@ public class Table implements I_table {
 	 * Set the piece to position for the enemy
 	 * 
 	 * @param piece
-	 *            piece to position for the enemy
+	 *           Piece to be placed by the adversary
 	 */
 	@Override
 	public void setEnemyPiece(Piece piece) {
-		pieceToPosition = piece;
+		pieceToBePlaced = piece;
 	}
 
 	/**
-	 * Save the pieces in the file specified by the path
+	 * Saves the pieces in the file specified by the path
 	 * 
 	 * @param path
-	 *            of the file where you want to save the pieces
+	 *            file's path where you want the pieces to be saved
 	 * 
 	 * @throws IOException
 	 *             If an I/O error occurs
@@ -151,7 +152,7 @@ public class Table implements I_table {
 		try {
 			FileWriter fw = new FileWriter(path);
 			out = new BufferedWriter(fw);
-			for (Piece piece : pieceNotUsed) {
+			for (Piece piece : notUsedPieces) {
 				out.newLine();
 				out.write(piece.toString());
 			}
@@ -167,11 +168,11 @@ public class Table implements I_table {
 	}
 
 	/**
-	 * Get the piece choose by the enemy to position by this program
+	 * Gets the piece that has to be place which has previously been chosen by the adversary.
 	 */
 	@Override
 	public Piece getPieceToPosition() {
-		return pieceToPosition;
+		return pieceToBePlaced;
 	}
 
 	/**
@@ -185,13 +186,13 @@ public class Table implements I_table {
 	}
 
 	/**
-	 * Get the piece not used of the Table.
+	 * Gets the piece not used of the Table.
 	 * 
 	 * @return the pieceNotUsed as ArrayList of Piece
 	 */
 	@Override
 	public ArrayList<Piece> getPieceNotUsed() {
-		return pieceNotUsed;
+		return notUsedPieces;
 	}
 
 	/**
@@ -217,7 +218,7 @@ public class Table implements I_table {
 	 */
 	@Override
 	public void removePieceNotUsedAtPosition(int position) {
-		pieceNotUsed.remove(position);
+		notUsedPieces.remove(position);
 	}
 
 	/**
@@ -253,10 +254,10 @@ public class Table implements I_table {
 	 * @return true if the piece is already placed, false otherwise
 	 */
 	private boolean isPlaced(Piece p) {
-		if (p.isEqualTo(pieceToPosition)) {
+		if (p.isEqualTo(pieceToBePlaced)) {
 			return true;
 		} else {
-			for (Piece piece : pieceNotUsed) {
+			for (Piece piece : notUsedPieces) {
 				if (p.isEqualTo(piece))
 					return true;
 			}
