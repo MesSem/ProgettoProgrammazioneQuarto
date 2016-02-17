@@ -73,7 +73,7 @@ public class Piece implements I_piece {
 					} else {
 						// the analyzedPiece has some wrong parameter
 						throw new PieceConfigurationException(
-								"An error has occurred. First character should always be A or B.");
+								"An error has occurred. Only first character could be A or B.");
 					}
 					break;
 				// in the other case the code do the same things for the other
@@ -84,7 +84,7 @@ public class Piece implements I_piece {
 						tmpPiece = tmpPiece + c;
 					} else {
 						throw new PieceConfigurationException(
-								"An error has occurred. Second character should always be W or N.");
+								"An error has occurred. Only second character could be W or N.");
 					}
 					break;
 				case 'T':
@@ -93,7 +93,7 @@ public class Piece implements I_piece {
 						tmpPiece = tmpPiece + c;
 					} else {
 						throw new PieceConfigurationException(
-								"An error has occurred. Third character should always be T or Q.");
+								"An error has occurred. Only third character could be T or Q.");
 					}
 					break;
 				case 'P':
@@ -102,7 +102,7 @@ public class Piece implements I_piece {
 						tmpPiece = tmpPiece + c;
 					} else {
 						throw new PieceConfigurationException(
-								"An error has occurred. Fourth character should always be P or F.");
+								"An error has occurred. Only fourth character could be P or F.");
 					}
 					break;
 				default:

@@ -63,7 +63,7 @@ public class Board implements I_board {
 								// board
 								boolean placed = isPlaced(p);
 								if (placed) {
-									throw new BoardConfigurationException("This piece is already placed!");
+									throw new BoardConfigurationException("This piece "+ row[c] +" is already placed!");
 								} else {
 									board[cont][c] = p;
 								}
