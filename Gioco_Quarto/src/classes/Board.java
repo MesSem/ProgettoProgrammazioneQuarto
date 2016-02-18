@@ -19,7 +19,7 @@ import interfaces.I_board;
 public class Board implements I_board {
 
 	// Is the board where the players put the pieces
-	public Piece[][] board = new Piece[4][4];
+	private Piece[][] board = new Piece[4][4];
 
 	/**
 	 * Loads placed pieces in the board.
