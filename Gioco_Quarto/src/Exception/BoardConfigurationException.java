@@ -1,5 +1,11 @@
-package classes;
+package Exception;
 
+/**
+ * This exception will be thrown if an error occurs into the Board's file
+ * 
+ * @author Morettini and Candelaresi
+ *
+ */
 public class BoardConfigurationException extends Exception {
 	public BoardConfigurationException() {
 		super();
@@ -9,11 +15,4 @@ public class BoardConfigurationException extends Exception {
 		super(message);
 	}
 
-	public BoardConfigurationException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public BoardConfigurationException(Throwable cause) {
-		super(cause);
-	}
 }

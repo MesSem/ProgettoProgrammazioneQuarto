@@ -1,5 +1,12 @@
-package classes;
+package Exception;
 
+/**
+ * This exception will be thrown if Piece Not Used file's data are damaged,
+ * corrupted, incomplete or wrong
+ * 
+ * @author Morettini and Candelaresi
+ *
+ */
 public class PieceConfigurationException extends Exception {
 	public PieceConfigurationException() {
 		super();
@@ -9,11 +16,4 @@ public class PieceConfigurationException extends Exception {
 		super(message);
 	}
 
-	public PieceConfigurationException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public PieceConfigurationException(Throwable cause) {
-		super(cause);
-	}
 }
